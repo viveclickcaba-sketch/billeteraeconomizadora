@@ -189,6 +189,12 @@
     .bl.sm .ini { font-size: 9px; }
     .chip { display: inline-flex; align-items: center; gap: 8px; }
     .rub { display: inline-flex; align-items: center; gap: 4px; }
+    .bl.store .rub-fb { background: var(--card2); color: var(--ink2); }
+    .bl.store .rub-fb svg { width: 20px; height: 20px; }
+    .bl.store.sm .rub-fb svg { width: 13px; height: 13px; }
+    .bl.store:has(.rub-fb:only-child) { background: var(--card2); }
+    .card-head .name small.via { display: flex; align-items: center; gap: 6px; }
+    .stores button { display: inline-flex; align-items: center; gap: 8px; }
     .rub svg { width: 14px; height: 14px; }
     .card-head .name { flex: 1; font-weight: 700; font-size: 15.5px; line-height: 1.25; }
     .card-head .name small { display: block; font-weight: 500; color: var(--muted); font-size: 13px; margin-top: 2px; }
@@ -640,6 +646,35 @@
       if (!d) return `<span class="bl${small ? " sm" : ""}" aria-hidden="true">${ini}</span>`;
       return `<span class="bl${small ? " sm" : ""}" aria-hidden="true"><img src="https://www.google.com/s2/favicons?domain=${d}&sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()" />${ini}</span>`;
     }
+    // Logos de comercios: el ícono que cada comercio publica en su web; si no hay, el ícono del rubro
+    const STORE_DOMAINS = {
+      "burger king": "burgerking.com.ar", "diarco": "diarco.com.ar", "carrefour": "carrefour.com.ar", "coto": "coto.com.ar",
+      "dia": "diaonline.supermercadosdia.com.ar", "changomas": "changomas.com.ar", "jumbo": "jumbo.com.ar", "disco": "disco.com.ar",
+      "vea": "vea.com.ar", "makro": "makro.com.ar", "vital": "vital.com.ar", "maxiconsumo": "maxiconsumo.com",
+      "farmacity": "farmacity.com", "farmaplus": "farmaplus.com.ar", "farmaonline": "farmaonline.com", "ypf": "ypf.com",
+      "shell": "shell.com.ar", "axion": "axionenergy.com", "havanna": "havanna.com.ar", "freddo": "freddo.com.ar",
+      "mcdonald's": "mcdonalds.com.ar", "antares": "cervezaantares.com", "le pain quotidien": "lepainquotidien.com",
+      "tea connection": "teaconnection.com.ar", "juan valdez cafe": "juanvaldezcafe.com", "la cabrera": "lacabrera.com.ar",
+      "cabify": "cabify.com", "claro": "claro.com.ar", "tienda online claro": "claro.com.ar", "atrapalo": "atrapalo.com.ar",
+      "grimoldi": "grimoldi.com", "puppis": "puppis.com.ar", "lucciano's": "luccianos.com", "starbucks": "starbucks.com.ar",
+      "mostaza": "mostazaweb.com.ar", "dean & dennys": "deanddennys.com.ar"
+    };
+    function storeDomain(p) {
+      const keys = [norm(p.brand), norm(String(p.comercio).replace(/\(.*?\)/g, "").trim())];
+      for (const k of keys) {
+        if (!k) continue;
+        if (STORE_DOMAINS[k]) return STORE_DOMAINS[k];
+        const hit = Object.keys(STORE_DOMAINS).find((d) => k === d || k.startsWith(d + " "));
+        if (hit) return STORE_DOMAINS[hit];
+      }
+      return "";
+    }
+    function storeLogo(p, small) {
+      const d = storeDomain(p);
+      const fb = `<span class="ini rub-fb">${placeIcon(p.place)}</span>`;
+      if (!d) return `<span class="bl store${small ? " sm" : ""}" aria-hidden="true">${fb}</span>`;
+      return `<span class="bl store${small ? " sm" : ""}" aria-hidden="true"><img src="https://www.google.com/s2/favicons?domain=${d}&sz=64" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()" />${fb}</span>`;
+    }
     const placeIcon = (place) => ICONS[(PLACES.find((x) => x.id === place) || PLACES[6]).icon];
 
     // ===== Preferencias =====
@@ -717,8 +752,8 @@
       return `
         <article class="card big">
           <div class="card-head">
-            ${bankLogo(p.medioPago)}
-            <div class="name">${esc(p.comercio)}<small><span class="rub">${placeIcon(p.place)}${esc(p.rubro)}</span> · ${esc(p.medioPago)}</small></div>
+            ${storeLogo(p)}
+            <div class="name">${esc(p.comercio)}<small class="via">${bankLogo(p.medioPago, true)}<span>${esc(p.medioPago)} · ${esc(p.rubro)}</span></small></div>
             <button class="star on" type="button" data-fav="${esc(p.comercio)}" aria-label="Quitar de favoritos">★</button>
           </div>
           ${pct(p)}
@@ -736,8 +771,8 @@
       return `
         <article class="card">
           <div class="card-head">
-            ${bankLogo(p.medioPago)}
-            <div class="name">${esc(p.comercio)}<small><span class="rub">${placeIcon(p.place)}${esc(p.rubro)}</span> · ${esc(p.medioPago)}</small></div>
+            ${storeLogo(p)}
+            <div class="name">${esc(p.comercio)}<small class="via">${bankLogo(p.medioPago, true)}<span>${esc(p.medioPago)} · ${esc(p.rubro)}</span></small></div>
             <button class="star" type="button" data-fav="${esc(p.comercio)}" aria-label="Agregar a favoritos">☆</button>
           </div>
           ${pct(p)}
@@ -755,7 +790,7 @@
         <article class="best">
           <div class="best-label">La mejor del ${state.date === todayISO() ? "día" : dayName(state.date).toLowerCase()}</div>
           <div class="best-pct">${esc(p.off)}% OFF</div>
-          <div class="best-name">${esc(p.comercio)}</div>
+          <div class="best-name" style="display:flex;align-items:center;gap:12px">${storeLogo(p)}<span>${esc(p.comercio)}</span></div>
           <div class="best-meta" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">${bankLogo(p.medioPago, true)}Con ${esc(p.medioPago)} · ${p.tope ? "tope " + money(p.tope) : "sin tope"}${p.hasta ? " · hasta el " + shortDate(p.hasta) : ""}</div>
           <div class="best-row">
             ${link ? `<a class="btn small" style="display:inline-flex;align-items:center;text-decoration:none" href="${esc(link)}" target="_blank" rel="noopener">Ver promo</a>` : ""}
@@ -793,7 +828,7 @@
       const brands = Object.keys(counts).sort((a, b) => counts[b] - counts[a] || a.localeCompare(b, "es"));
       if (state.brand && !brands.includes(state.brand)) state.brand = "";
       $("storeRow").innerHTML = brands.length ? [`<button type="button" data-brand="" class="${state.brand ? "" : "on"}">Todos</button>`,
-        ...brands.map((b) => `<button type="button" data-brand="${esc(b)}" class="${state.brand === b ? "on" : ""}">${esc(b)} · ${counts[b]}</button>`)].join("") : "";
+        ...brands.map((b) => `<button type="button" data-brand="${esc(b)}" class="${state.brand === b ? "on" : ""}">${storeLogo(base.find((p) => p.brand === b), true)}${esc(b)} · ${counts[b]}</button>`)].join("") : "";
     }
     function renderPay() {
       const groups = {};
