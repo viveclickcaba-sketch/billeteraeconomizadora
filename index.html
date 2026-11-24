@@ -234,6 +234,32 @@
     .wa svg { width: 16px; height: 16px; }
     .empty { border: 1px dashed var(--line); border-radius: 18px; padding: 22px; text-align: center; color: var(--muted); font-size: 14px; }
 
+    /* ===== Pro ===== */
+    .pro-banner {
+      display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap;
+      margin: 6px 0 8px; padding: 22px 24px; border-radius: 22px; border: 1px solid #4a1414;
+      background: linear-gradient(120deg, rgba(255,0,0,0.20), rgba(255,0,0,0.04) 60%), var(--card);
+    }
+    .pro-banner h2 { font: 800 22px/1.2 "Montserrat", sans-serif; margin: 0 0 4px; }
+    .pro-banner p { margin: 0; color: var(--ink2); font-size: 15px; max-width: 60ch; }
+    .btn.pro { height: 48px; padding: 0 22px; font-size: 16px; }
+    .modal.pro-modal { max-width: 560px; margin-top: 6vh; }
+    .pro-price { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin: 6px 0 4px; }
+    .pro-price b { font: 800 44px/1 "Montserrat", sans-serif; }
+    .pro-price span { color: var(--muted); font-size: 15px; }
+    .pro-badge { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: #fff; background: var(--red); padding: 4px 10px; border-radius: 999px; }
+    .pro-pays { background: var(--green-soft); color: var(--ink2); border-radius: 14px; padding: 12px 14px; font-size: 14.5px; margin: 14px 0 6px; }
+    .pro-pays b { color: var(--green); }
+    .pro-list { list-style: none; padding: 0; margin: 16px 0; display: grid; gap: 12px; }
+    .pro-list li { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 12px; align-items: start; }
+    .pro-list .pi { width: 34px; height: 34px; border-radius: 10px; background: var(--red-soft); color: var(--red); display: grid; place-items: center; }
+    .pro-list .pi svg { width: 18px; height: 18px; }
+    .pro-list b { display: block; font-size: 15px; }
+    .pro-list small { color: var(--muted); font-size: 13.5px; }
+    .soon { font-size: 11px; font-weight: 700; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 1px 7px; margin-left: 6px; vertical-align: 1px; }
+    .pro-cta { display: flex; width: 100%; justify-content: center; align-items: center; height: 52px; font-size: 16px; text-decoration: none; }
+    .pro-fine { text-align: center; color: var(--muted); font-size: 13px; margin: 10px 0 0; }
+
     /* ===== Pie ===== */
     footer.foot { border-top: 1px solid var(--line); margin-top: 30px; padding: 30px 0 40px; background: var(--bg2); }
     .foot-in { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
@@ -255,12 +281,14 @@
     .x { border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 50%; width: 36px; height: 36px; font-size: 16px; cursor: pointer; flex: none; }
     .lbl { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
     .pw-err { color: var(--hot); font-size: 13px; min-height: 18px; margin-top: 6px; }
-    .gen-controls { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 14px; }
+    .gen-controls { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 14px; }
     .gen-controls select { width: 100%; }
     .fmt { display: flex; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; height: 46px; }
     .fmt button { flex: 1; border: 0; background: var(--card); font-weight: 600; font-size: 14px; cursor: pointer; color: var(--muted); }
     .fmt button.on { background: var(--ink); color: var(--bg); }
     .pick-list { max-height: 340px; overflow-y: auto; border: 1px solid var(--line); border-radius: 14px; }
+    .pick-group { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 10px 12px; background: var(--card2); font: 800 14px "Montserrat", sans-serif; position: sticky; top: 0; z-index: 1; }
+    .pick-group small { font: 500 13px "Inter", sans-serif; color: var(--muted); }
     .pick { display: grid; grid-template-columns: 28px 64px minmax(0, 1fr); align-items: center; gap: 10px; padding: 10px 12px; border-bottom: 1px solid var(--line); cursor: pointer; }
     .pick:last-child { border-bottom: 0; }
     .pick input { width: 20px; height: 20px; accent-color: var(--red); }
@@ -358,6 +386,16 @@
       </div>
     </section>
 
+    <section class="wrap" aria-label="Suscripción Pro">
+      <div class="pro-banner">
+        <div>
+          <h2>¿Querés más descuentos, personalizados?</h2>
+          <p>Te mandamos por WhatsApp las promos de <b>tus</b> bancos, billeteras y lugares, todos los días.</p>
+        </div>
+        <button class="btn pro" type="button" id="proOpen">Acceder a más descuentos</button>
+      </div>
+    </section>
+
     <section class="results wrap" id="results" aria-label="Promos">
       <div class="res-head"><h2 id="resTitle">Promos de hoy</h2><span id="resSub"></span></div>
       <p class="notice" id="statusNote">Cargando promos…</p>
@@ -387,6 +425,29 @@
       </div>
     </div>
   </footer>
+
+  <!-- Pro: más descuentos -->
+  <div class="overlay" id="proOverlay">
+    <div class="modal pro-modal" role="dialog" aria-modal="true" aria-labelledby="proTitle">
+      <div class="mhead">
+        <div>
+          <span class="pro-badge">Precio de lanzamiento</span>
+          <h3 id="proTitle" style="margin-top:10px">Accedé a más descuentos</h3>
+        </div>
+        <button class="x" type="button" data-close="proOverlay" aria-label="Cerrar">✕</button>
+      </div>
+      <div class="pro-price"><b>$3.500</b><span>por mes</span></div>
+      <div class="pro-pays"><b>Se paga solo:</b> una compra de $40.000 con 25% OFF ya te ahorra $10.000.</div>
+      <ul class="pro-list">
+        <li><span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 21l2.1-5.2A8.5 8.5 0 1 1 21 11.5z"/></svg></span><div><b>Tus ofertas del día por WhatsApp</b><small>Todas las mañanas, solo las promos de tus bancos, billeteras, zona y lugares favoritos.</small></div></li>
+        <li><span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2.5" width="14" height="19" rx="2.5"/><path d="M8.5 7h7M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16h.01M12 16h.01M15.5 16h.01"/></svg></span><div><b>Calculadora y planificador de gastos<span class="soon">MUY PRONTO</span></b><small>Cuánto ahorraste en el mes y cuánto tope te queda en cada promo.</small></div></li>
+        <li><span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.5L20.5 8H6.2"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17" cy="20" r="1.3"/></svg></span><div><b>Planificador de compras<span class="soon">MUY PRONTO</span></b><small>Te decimos qué día, dónde y con qué pagar para ahorrar más.</small></div></li>
+        <li><span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9L12 3z"/></svg></span><div><b>Descuentos exclusivos<span class="soon">MUY PRONTO</span></b><small>Cupones solo para suscriptores en los lugares que elijan ustedes.</small></div></li>
+      </ul>
+      <a class="btn pro-cta" id="proCta" href="#" target="_blank" rel="noopener">Suscribirme por $3.500</a>
+      <p class="pro-fine">Pagás con Mercado Pago. Cancelás cuando quieras.</p>
+    </div>
+  </div>
 
   <!-- Acceso a Placas VIVE -->
   <div class="overlay" id="pwOverlay">
@@ -428,6 +489,10 @@
           <select id="genZone"></select>
         </div>
         <div>
+          <label class="lbl" for="genRubro">Rubro</label>
+          <select id="genRubro"></select>
+        </div>
+        <div>
           <span class="lbl">Formato</span>
           <div class="fmt" id="genFormat">
             <button type="button" data-f="story" class="on">Historia 9:16</button>
@@ -436,6 +501,10 @@
         </div>
       </div>
 
+      <label class="lbl" style="display:flex;align-items:center;gap:8px;font-weight:500;margin:-4px 0 12px;cursor:pointer">
+        <input type="checkbox" id="genLink" checked style="width:18px;height:18px;accent-color:var(--red)" />
+        Dejar espacio para pegar el enlace (solo historias)
+      </label>
       <div class="pick-list" id="pickList"></div>
 
       <div class="gen-actions">
@@ -464,6 +533,8 @@
     ];
     const PW_HASH = "159290b30241e95cc82bfe0084976e322a2c1b3e575318cf10189bea73ccce02";
     const MAX_IN_ONE = 6;
+    // Link de suscripción (formulario o Mercado Pago). Completar cuando esté creado.
+    const PRO_LINK = "";
     const DAYS_ES = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
     const MONTHS_ES = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     const STORAGE_KEY = "radar_ofertas_prefs_v4";
@@ -934,7 +1005,7 @@
     });
 
     // ===== Placas VIVE (sección oculta) =====
-    const gen = { date: todayISO(), zone: "TODAS", format: "story", picked: new Set(), canvases: [] };
+    const gen = { date: todayISO(), zone: "TODAS", format: "story", picked: new Set(), canvases: [], linkSpace: true, rubro: "TODOS" };
 
     function openOverlay(id) { $(id).classList.add("open"); document.body.style.overflow = "hidden"; }
     function closeOverlay(id) { $(id).classList.remove("open"); document.body.style.overflow = ""; }
@@ -969,21 +1040,37 @@
     function openGenerator() {
       fillDateSelect($("genDate"), gen.date);
       fillSelect($("genZone"), "TODAS", "Todas las zonas", uniq(PROMOS.flatMap((p) => p.zonas)), gen.zone);
+      const rubros = RUBRO_ORDER.filter((r) => PROMOS.some((p) => rubroKey(p.rubro) === r));
+      $("genRubro").innerHTML = `<option value="TODOS">Todos los rubros</option>` + rubros.map((r) => `<option value="${esc(r)}">${esc(RUBRO_PLURAL[r])}</option>`).join("");
+      $("genRubro").value = gen.rubro;
       renderPickList();
       openOverlay("genOverlay");
     }
 
     function genList() {
-      return PROMOS.filter((p) => validOn(p, gen.date) && inZone(p, gen.zone)).sort((a, b) => b.off - a.off || b.tope - a.tope);
+      return PROMOS.filter((p) => validOn(p, gen.date) && inZone(p, gen.zone) && (gen.rubro === "TODOS" || rubroKey(p.rubro) === gen.rubro)).sort((a, b) => b.off - a.off || b.tope - a.tope);
     }
+    // Rubros de las placas, en este orden
+    const RUBRO_ORDER = ["Supermercado", "Mayorista", "Farmacia", "Combustible", "Gastronomía", "Transporte", "Indumentaria", "Electro", "Otros"];
+    const RUBRO_PLURAL = { Supermercado: "Supermercados", Mayorista: "Mayoristas", Farmacia: "Farmacias", Combustible: "Combustible", "Gastronomía": "Gastronomía", Transporte: "Transporte", Indumentaria: "Indumentaria", Electro: "Electro", Otros: "Locales y otros" };
+    const rubroKey = (r) => RUBRO_ORDER.find((x) => norm(x) === norm(r)) || "Otros";
+    const rubroName = (r) => RUBRO_PLURAL[rubroKey(r)] || r;
     function renderPickList() {
       const list = genList();
-      $("pickList").innerHTML = list.length ? list.map((p) => `
+      if (!list.length) { $("pickList").innerHTML = `<div class="empty" style="margin:12px">No hay promos para este día, zona y rubro.</div>`; updateSelCount(); return; }
+      const groups = {};
+      list.forEach((p) => { (groups[rubroKey(p.rubro)] = groups[rubroKey(p.rubro)] || []).push(p); });
+      $("pickList").innerHTML = RUBRO_ORDER.filter((r) => groups[r]).map((r) => `
+        <div class="pick-group">
+          <span>${esc(RUBRO_PLURAL[r])} <small>· ${groups[r].length}</small></span>
+          <button type="button" class="btn ghost small" data-pick-all="${esc(r)}">Tildar todas</button>
+        </div>
+        ${groups[r].map((p) => `
         <label class="pick">
           <input type="checkbox" data-pick="${p.id}" ${gen.picked.has(p.id) ? "checked" : ""} />
           <span class="p">${esc(p.off)}%</span>
           <span><span class="t">${esc(p.comercio)}</span><br><span class="s">${esc(p.medioPago)} · ${p.tope ? "Tope " + money(p.tope) : "Sin tope"}${p.hasta ? " · Hasta " + shortDate(p.hasta) : ""}</span></span>
-        </label>`).join("") : `<div class="empty" style="margin:12px">No hay promos para este día y zona.</div>`;
+        </label>`).join("")}`).join("");
       updateSelCount();
     }
     function updateSelCount() {
@@ -998,6 +1085,15 @@
     });
     $("genDate").addEventListener("change", (e) => { gen.date = e.target.value; gen.picked.clear(); renderPickList(); });
     $("genZone").addEventListener("change", (e) => { gen.zone = e.target.value; gen.picked.clear(); renderPickList(); });
+    $("pickList").addEventListener("click", (e) => {
+      const b = e.target.closest("[data-pick-all]"); if (!b) return;
+      const ids = genList().filter((p) => rubroKey(p.rubro) === b.dataset.pickAll).map((p) => p.id);
+      const all = ids.every((id) => gen.picked.has(id));
+      ids.forEach((id) => all ? gen.picked.delete(id) : gen.picked.add(id));
+      renderPickList();
+    });
+    $("genLink").addEventListener("change", (e) => { gen.linkSpace = e.target.checked; });
+    $("genRubro").addEventListener("change", (e) => { gen.rubro = e.target.value; renderPickList(); });
     $("clearPick").addEventListener("click", () => { gen.picked.clear(); renderPickList(); });
     $("genFormat").addEventListener("click", (e) => {
       const b = e.target.closest("[data-f]");
@@ -1086,11 +1182,72 @@
       return w;
     }
 
+    // ----- Logos en las placas -----
+    // Se piden a través de Netlify (mismo dominio) para poder descargarlas como PNG.
+    const LOGO_CACHE = new Map();
+    function proxiedLogo(d) {
+      const src = `https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${d}&size=128`;
+      return `/.netlify/images?url=${encodeURIComponent(src)}&w=128&h=128&fit=contain&fm=png`;
+    }
+    function loadLogo(d) {
+      if (!d) return Promise.resolve(null);
+      if (LOGO_CACHE.has(d)) return LOGO_CACHE.get(d);
+      const pr = new Promise((resolve) => {
+        const img = new Image();
+        const t = setTimeout(() => resolve(null), 5000);
+        img.onload = () => { clearTimeout(t); resolve(img.naturalWidth > 2 ? img : null); };
+        img.onerror = () => { clearTimeout(t); resolve(null); };
+        img.src = proxiedLogo(d);
+      });
+      LOGO_CACHE.set(d, pr);
+      return pr;
+    }
+    const LOGOS = { store: new Map(), bank: new Map() };
+    async function preloadLogos(list) {
+      await Promise.all(list.flatMap((p) => [
+        loadLogo(storeDomain(p)).then((img) => LOGOS.store.set(p.id, img)),
+        loadLogo(logoDomain(p.medioPago)).then((img) => LOGOS.bank.set(p.medioPago, img))
+      ]));
+    }
+    // Cuadradito blanco con el logo; si no hay logo, cuadrado de color con iniciales
+    function logoBox(ctx, img, x, y, size, label) {
+      const r = size * 0.24;
+      roundRect(ctx, x, y, size, size, r);
+      if (img) {
+        ctx.fillStyle = "#ffffff"; ctx.fill();
+        const pad = size * 0.14, inner = size - pad * 2;
+        const k = Math.min(inner / img.naturalWidth, inner / img.naturalHeight);
+        const w = img.naturalWidth * k, h = img.naturalHeight * k;
+        ctx.save(); roundRect(ctx, x, y, size, size, r); ctx.clip();
+        ctx.drawImage(img, x + (size - w) / 2, y + (size - h) / 2, w, h);
+        ctx.restore();
+      } else {
+        ctx.fillStyle = colorFor(label); ctx.fill();
+        ctx.fillStyle = "#ffffff"; ctx.font = F(800, size * 0.38); ctx.textAlign = "center"; ctx.textBaseline = "middle";
+        ctx.fillText(initials(label), x + size / 2, y + size / 2 + 2);
+        ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
+      }
+    }
+    // Espacio reservado para pegar el sticker de enlace de Instagram (solo historias)
+    const LINK_BOX_H = 130;
+    function linkSpace(ctx, W, H) {
+      const bw = 660, bx = (W - bw) / 2, by = H - 160 - LINK_BOX_H;
+      ctx.fillStyle = "#ffffff"; ctx.font = F(800, 32); ctx.textAlign = "center";
+      ctx.fillText("MÁS PROMOS EN EL LINK", W / 2, by - 26);
+      ctx.save(); ctx.setLineDash([14, 12]); ctx.lineWidth = 3; ctx.strokeStyle = "rgba(255,255,255,0.35)";
+      roundRect(ctx, bx, by, bw, LINK_BOX_H, 28); ctx.stroke(); ctx.restore();
+      ctx.textAlign = "left";
+    }
+    const useLink = (format) => format === "story" && gen.linkSpace;
+
     // Escribe el contenido de una promo desde y0 y devuelve dónde termina
     function singleContent(ctx, p, format, y0) {
       const [W] = SIZES[format];
       const M = 90, maxW = W - M * 2;
       let y = y0;
+      const ls = format === "story" ? 130 : 104;
+      logoBox(ctx, LOGOS.store.get(p.id), M, y, ls, p.comercio);
+      y += ls + 56;
       const bajada = `${dateLine(gen.date)} · ${p.rubro}`.toUpperCase();
       let t = fitText(ctx, bajada, 800, 40, 28, maxW, 2);
       ctx.fillStyle = "#ff0000";
@@ -1106,7 +1263,9 @@
       t.lines.forEach((l) => { y += t.size * 1.02; ctx.font = F(800, t.size); ctx.fillText(l, M, y); });
       y += 44;
       const pillSize = format === "story" ? 38 : 34;
-      const w1 = pill(ctx, M, y, p.medioPago.toUpperCase(), pillSize, "#ffffff", "#0b0b0d");
+      const bl = pillSize * 1.75;
+      logoBox(ctx, LOGOS.bank.get(p.medioPago), M, y, bl, p.medioPago);
+      const w1 = bl + 12 + pill(ctx, M + bl + 12, y, p.medioPago.toUpperCase(), pillSize, "#ffffff", "#0b0b0d");
       const topeTxt = p.tope ? `TOPE ${money(p.tope)}` : "SIN TOPE";
       ctx.font = F(700, pillSize);
       const w2 = ctx.measureText(topeTxt).width + pillSize * 1.3;
@@ -1134,9 +1293,11 @@
       const ctx = c.getContext("2d");
       background(ctx, W, H);
       drawLogo(ctx, W, H, format);
-      const top = format === "story" ? 260 : 80, bottom = format === "story" ? H - 220 : H - 200;
-      const y0 = Math.max(top + 40, top + (bottom - top - h) / 2 + 40);
+      const top = format === "story" ? 260 : 80;
+      const bottom = format === "story" ? (useLink(format) ? H - 360 : H - 220) : H - 200;
+      const y0 = Math.max(top + 10, top + (bottom - top - h) / 2);
       singleContent(ctx, p, format, y0);
+      if (useLink(format)) linkSpace(ctx, W, H);
       footNote(ctx, W, format === "story" ? H - 120 : H - 140);
       return c;
     }
@@ -1148,13 +1309,14 @@
       background(ctx, W, H);
       drawLogo(ctx, W, H, format);
       const M = 80, maxW = W - M * 2;
-      const title = list.length === 1 ? "LA PROMO DEL DÍA" : "LAS PROMOS DEL DÍA";
+      const oneRubro = new Set(list.map((p) => rubroKey(p.rubro))).size === 1;
+      const title = oneRubro ? `PROMOS EN ${rubroName(list[0].rubro).toUpperCase()}` : (list.length === 1 ? "LA PROMO DEL DÍA" : "LAS PROMOS DEL DÍA");
       let ts = format === "story" ? 92 : 78;
       ctx.font = F(800, ts);
       while (ctx.measureText(title).width > maxW && ts > 50) { ts -= 4; ctx.font = F(800, ts); }
       const headH = 22 + ts + 44;
       const top = format === "story" ? 300 : 140;
-      const bottom = format === "story" ? H - 190 : H - 150;
+      const bottom = format === "story" ? (useLink(format) ? H - 350 : H - 190) : H - 150;
       const gap = 18;
       const rowH = Math.min(format === "story" ? 210 : 150, (bottom - top - headH - gap * (list.length - 1)) / list.length);
       const blockH = headH + list.length * rowH + (list.length - 1) * gap;
@@ -1169,27 +1331,38 @@
       list.forEach((p) => {
         roundRect(ctx, M, y, maxW, rowH, 26);
         ctx.fillStyle = "rgba(255,255,255,0.08)"; ctx.fill();
+        // logo del comercio
+        const lsz = Math.min(rowH * 0.58, 96);
+        logoBox(ctx, LOGOS.store.get(p.id), M + 26, y + (rowH - lsz) / 2, lsz, p.comercio);
         // porcentaje
-        const ps = Math.min(rowH * 0.5, 96);
+        const ps = Math.min(rowH * 0.46, 88);
+        const pctX = M + 26 + lsz + 24;
         ctx.fillStyle = "#ffffff"; ctx.font = F(800, ps); ctx.textBaseline = "middle";
         const pctTxt = `${p.off}%`;
-        ctx.fillText(pctTxt, M + 34, y + rowH / 2 + 2);
-        const textX = M + 34 + Math.max(ctx.measureText("100%").width, ctx.measureText(pctTxt).width) + 30;
+        ctx.fillText(pctTxt, pctX, y + rowH / 2 + 2);
+        const textX = pctX + Math.max(ctx.measureText("100%").width, ctx.measureText(pctTxt).width) + 26;
         const tw = M + maxW - 30 - textX;
         // comercio + detalle
         const ns = Math.min(rowH * 0.24, 46);
-        const nt = fitText(ctx, p.comercio.toUpperCase(), 800, ns, 26, tw, 1);
-        ctx.fillStyle = "#ffffff"; ctx.font = F(800, nt.size);
-        ctx.fillText(nt.lines[0] + (wrapLines(ctx, p.comercio.toUpperCase(), tw).length > 1 ? "…" : ""), textX, y + rowH / 2 - nt.size * 0.55);
         const ds = Math.min(rowH * 0.16, 30);
+        const nt = fitText(ctx, p.comercio.toUpperCase(), 800, ns, 30, tw, rowH > 160 ? 2 : 1);
+        const nameH = nt.lines.length * nt.size * 1.05;
+        const blockTop = y + (rowH - (nameH + 14 + ds * 1.35)) / 2;
+        ctx.fillStyle = "#ffffff"; ctx.font = F(800, nt.size); ctx.textBaseline = "top";
+        nt.lines.forEach((l, i) => ctx.fillText(l, textX, blockTop + i * nt.size * 1.05));
+        ctx.textBaseline = "middle";
         ctx.fillStyle = "rgba(255,255,255,0.75)"; ctx.font = F(600, ds);
         const det = `${p.medioPago} · ${p.tope ? "Tope " + money(p.tope) : "Sin tope"}`;
-        const dt = fitText(ctx, det, 600, ds, 20, tw, 1);
-        ctx.font = F(600, dt.size);
-        ctx.fillText(dt.lines[0], textX, y + rowH / 2 + nt.size * 0.65);
+        const bsz = ds * 1.35, lineY = blockTop + nameH + 14 + bsz / 2;
+        logoBox(ctx, LOGOS.bank.get(p.medioPago), textX, lineY - bsz / 2, bsz, p.medioPago);
+        ctx.textBaseline = "middle";
+        const dt = fitText(ctx, det, 600, ds, 20, tw - bsz - 10, 1);
+        ctx.fillStyle = "rgba(255,255,255,0.75)"; ctx.font = F(600, dt.size);
+        ctx.fillText(dt.lines[0], textX + bsz + 10, lineY);
         ctx.textBaseline = "alphabetic";
         y += rowH + gap;
       });
+      if (useLink(format)) linkSpace(ctx, W, H);
       footNote(ctx, W, format === "story" ? H - 120 : H - 140);
       return c;
     }
@@ -1226,9 +1399,11 @@
       gen.canvases.forEach(({ canvas, name }, i) => setTimeout(() => download(canvas, name), i * 400));
     });
 
+    // Espera logo y tipografías, pero nunca más de 3 segundos
+    const withTimeout = (pr, ms) => Promise.race([pr.catch(() => null), new Promise((r) => setTimeout(r, ms))]);
     async function fontsReady() {
-      try { await logoImg.decode(); } catch { /* sigue con texto */ }
-      try { await Promise.all([document.fonts.load(F(800, 60)), document.fonts.load(F(700, 30)), document.fonts.load(F(600, 30)), document.fonts.load(F(500, 30))]); } catch { /* usa la de respaldo */ }
+      await withTimeout(logoImg.decode(), 3000);
+      await withTimeout(Promise.all([document.fonts.load(F(800, 60)), document.fonts.load(F(700, 30)), document.fonts.load(F(600, 30)), document.fonts.load(F(500, 30))]), 3000);
     }
 
     $("genEach").addEventListener("click", async () => {
@@ -1236,6 +1411,7 @@
       $("genMsg").textContent = list.length ? "" : "Tildá al menos una promo.";
       if (!list.length) return;
       await fontsReady();
+      $("genMsg").textContent = "Cargando logos…"; await preloadLogos(list); $("genMsg").textContent = "";
       showPreviews(list.map((p, i) => ({ canvas: drawSingle(p, gen.format), name: `vive-promo-${gen.date}-${pad(i + 1)}-${slug(p.comercio)}-${gen.format}.png` })));
     });
     $("genOne").addEventListener("click", async () => {
@@ -1244,9 +1420,18 @@
       if (list.length > MAX_IN_ONE) { $("genMsg").textContent = `En una sola placa entran hasta ${MAX_IN_ONE} promos. Tenés ${list.length} tildadas.`; return; }
       $("genMsg").textContent = "";
       await fontsReady();
+      $("genMsg").textContent = "Cargando logos…"; await preloadLogos(list); $("genMsg").textContent = "";
       showPreviews([{ canvas: drawCombined(list, gen.format), name: `vive-promos-${gen.date}-${gen.format}.png` }]);
     });
 
+
+    // ===== Pro =====
+    $("proOpen").addEventListener("click", () => {
+      const cta = $("proCta");
+      if (PRO_LINK) { cta.href = PRO_LINK; cta.textContent = "Suscribirme por $3.500"; }
+      else { cta.removeAttribute("href"); cta.textContent = "Muy pronto: cupos limitados"; cta.style.opacity = ".7"; }
+      openOverlay("proOverlay");
+    });
 
     // ===== Inicio =====
     async function init() {
