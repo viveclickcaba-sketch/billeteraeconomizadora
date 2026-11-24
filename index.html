@@ -320,6 +320,54 @@
       .stat b { font-size: 32px; }
     }
     @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    /* ===== Mi Pro · Economizador de billetera ===== */
+    .btn.pro-ghost { height: 48px; padding: 0 18px; font-size: 15px; background: transparent; color: var(--ink); border: 1px solid var(--line); }
+    .pro-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+    .pro-enter { display: block; text-align: center; margin-top: 12px; font-size: 14px; color: var(--ink2); }
+    .pro-enter button { background: none; border: 0; color: var(--red); font: inherit; font-weight: 700; cursor: pointer; padding: 0; }
+    .modal.mp-modal { max-width: 720px; padding: 0; overflow: hidden; }
+    .mp-top { padding: 18px 20px 14px; background: var(--hero-glow), var(--bg2); border-bottom: 1px solid var(--line); }
+    .mp-brand { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .mp-brand img { height: 26px; }
+    .mp-pill { background: var(--red); color: #fff; font: 800 11px "Montserrat", sans-serif; padding: 3px 9px; border-radius: 20px; letter-spacing: .04em; }
+    .mp-name { font: 800 18px "Montserrat", sans-serif; margin: 10px 0 0; }
+    .mp-tabs { display: flex; gap: 8px; margin-top: 14px; }
+    .mp-tab { flex: 1; text-align: center; font: 700 13.5px "Montserrat", sans-serif; padding: 10px 6px; border-radius: 12px; background: var(--card); color: var(--muted); border: 1px solid var(--line); cursor: pointer; }
+    .mp-tab.on { background: var(--red-soft); color: var(--red); border-color: rgba(255,26,26,.4); }
+    .mp-body { padding: 18px 20px 22px; }
+    .mp-card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px; margin-bottom: 14px; }
+    .mp-card h4 { font: 800 15px "Montserrat", sans-serif; margin: 0 0 10px; }
+    .mp-big { font: 800 38px/1.1 "Montserrat", sans-serif; color: var(--green); }
+    .mp-muted { color: var(--muted); font-size: 13px; }
+    .mp-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; }
+    .mp-bar { height: 8px; border-radius: 6px; background: var(--card2); overflow: hidden; margin: 7px 0 12px; }
+    .mp-bar i { display: block; height: 100%; border-radius: 6px; background: var(--green); }
+    .mp-bar.warn i { background: #f59e0b; } .mp-bar.full i { background: var(--red); }
+    .mp-li { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 14px; }
+    .mp-li:first-of-type { border-top: 0; }
+    .mp-li .r { margin-left: auto; text-align: right; font-weight: 700; white-space: nowrap; }
+    .mp-li .del { border: 0; background: none; color: var(--muted); cursor: pointer; font-size: 16px; padding: 4px; }
+    .mp-green { color: var(--green); }
+    .mp-form { display: grid; gap: 10px; }
+    .mp-form .two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .mp-form select, .mp-form input { width: 100%; }
+    .mp-preview { background: var(--green-soft); color: var(--ink2); border-radius: 12px; padding: 10px 12px; font-size: 14px; }
+    .mp-preview b { color: var(--green); }
+    .mp-cats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .mp-cat { display: flex; align-items: center; gap: 8px; background: var(--card2); border: 1px solid var(--line); border-radius: 12px; padding: 6px 10px; }
+    .mp-cat span { font-size: 13.5px; font-weight: 600; flex: 1; }
+    .mp-cat input { width: 110px; height: 34px; font-size: 14px; }
+    .mp-day { font: 800 12px "Montserrat", sans-serif; color: var(--red); letter-spacing: .06em; text-transform: uppercase; margin: 14px 0 2px; }
+    .mp-day:first-of-type { margin-top: 4px; }
+    .mp-total { font: 800 12px "Montserrat", sans-serif; padding: 4px 9px; border-radius: 8px; background: var(--green-soft); color: var(--green); }
+    .mp-coupon { display: grid; gap: 8px; }
+    .mp-code { display: flex; align-items: center; justify-content: space-between; gap: 10px; border: 2px dashed var(--red); border-radius: 12px; padding: 10px 12px; font: 800 18px "Montserrat", sans-serif; letter-spacing: .08em; }
+    .mp-lock { padding: 34px 24px 30px; text-align: center; background: radial-gradient(500px 300px at 50% 0%, rgba(255,0,0,.22), transparent 60%), var(--bg2); }
+    .mp-lock img { height: 44px; }
+    .mp-lock h3 { margin-top: 14px; }
+    .mp-lock input { width: 100%; max-width: 280px; text-align: center; text-transform: uppercase; letter-spacing: .2em; font: 800 20px "Montserrat", sans-serif; height: 54px; margin: 16px auto 0; display: block; }
+    .mp-lock .btn { width: 100%; max-width: 280px; margin-top: 12px; height: 48px; }
+    @media (max-width: 560px) { .mp-cats, .mp-form .two { grid-template-columns: 1fr; } .mp-cat input { width: 120px; } .mp-big { font-size: 32px; } }
   </style>
 </head>
 <body>
@@ -392,7 +440,7 @@
           <h2>¿Querés más descuentos, personalizados?</h2>
           <p>Te mandamos por WhatsApp las promos de <b>tus</b> bancos, billeteras y lugares, todos los días.</p>
         </div>
-        <button class="btn pro" type="button" id="proOpen">Acceder a más descuentos</button>
+        <div class="pro-btns"><button class="btn pro" type="button" id="proOpen">Acceder a más descuentos</button><button class="btn pro-ghost" type="button" id="proMine">Ya soy Pro</button></div>
       </div>
     </section>
 
@@ -440,12 +488,81 @@
       <div class="pro-pays"><b>Se paga solo:</b> una compra de $40.000 con 25% OFF ya te ahorra $10.000.</div>
       <ul class="pro-list">
         <li><span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 21l2.1-5.2A8.5 8.5 0 1 1 21 11.5z"/></svg></span><div><b>Tus ofertas del día por WhatsApp</b><small>Todas las mañanas, solo las promos de tus bancos, billeteras, zona y lugares favoritos.</small></div></li>
-        <li><span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2.5" width="14" height="19" rx="2.5"/><path d="M8.5 7h7M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16h.01M12 16h.01M15.5 16h.01"/></svg></span><div><b>Calculadora y planificador de gastos<span class="soon">MUY PRONTO</span></b><small>Cuánto ahorraste en el mes y cuánto tope te queda en cada promo.</small></div></li>
-        <li><span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.5L20.5 8H6.2"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17" cy="20" r="1.3"/></svg></span><div><b>Planificador de compras<span class="soon">MUY PRONTO</span></b><small>Te decimos qué día, dónde y con qué pagar para ahorrar más.</small></div></li>
+        <li><span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2.5" width="14" height="19" rx="2.5"/><path d="M8.5 7h7M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16h.01M12 16h.01M15.5 16h.01"/></svg></span><div><b>Calculadora y planificador de gastos</b><small>Cuánto ahorraste en el mes y cuánto tope te queda en cada promo.</small></div></li>
+        <li><span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.5L20.5 8H6.2"/><circle cx="9.5" cy="20" r="1.3"/><circle cx="17" cy="20" r="1.3"/></svg></span><div><b>Planificador de compras</b><small>Te decimos qué día, dónde y con qué pagar para ahorrar más.</small></div></li>
         <li><span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9L12 3z"/></svg></span><div><b>Descuentos exclusivos<span class="soon">MUY PRONTO</span></b><small>Cupones solo para suscriptores en los lugares que elijan ustedes.</small></div></li>
       </ul>
       <a class="btn pro-cta" id="proCta" href="#" target="_blank" rel="noopener">Suscribirme por $3.500</a>
       <p class="pro-fine">Pagás con Mercado Pago. Cancelás cuando quieras.</p>
+      <p class="pro-enter">¿Ya sos Pro? <button type="button" id="proEnter">Entrá a tu Economizador de billetera</button></p>
+    </div>
+  </div>
+
+  <!-- Mi Pro · Economizador de billetera -->
+  <div class="overlay" id="mpOverlay">
+    <div class="modal mp-modal" role="dialog" aria-modal="true" aria-labelledby="mpTitle">
+      <div id="mpLock" class="mp-lock">
+        <div style="display:flex;justify-content:flex-end"><button class="x" type="button" data-close="mpOverlay" aria-label="Cerrar">✕</button></div>
+        <img class="mp-logo" alt="VIVE" />
+        <div><span class="mp-pill">PRO</span></div>
+        <h3 id="mpTitle">Economizador de billetera</h3>
+        <p class="sub" style="max-width:340px;margin:0 auto">Tu espacio Pro. Ingresá la clave del mes que te mandamos por WhatsApp.</p>
+        <form id="mpForm">
+          <input id="mpKey" type="text" autocomplete="off" autocapitalize="characters" placeholder="CLAVE" aria-label="Clave Pro" />
+          <div class="pw-err" id="mpErr"></div>
+          <button class="btn" type="submit">Entrar</button>
+        </form>
+        <p class="mp-muted" style="margin-top:18px">¿Todavía no sos Pro? <a id="mpJoin" href="#" target="_blank" rel="noopener" style="color:var(--red);font-weight:700">Suscribite por $3.500</a><br>La clave queda guardada en este celu.</p>
+      </div>
+      <div id="mpApp" hidden>
+        <div class="mp-top">
+          <div class="mhead">
+            <div class="mp-brand"><img class="mp-logo" alt="VIVE" /><span class="mp-pill">PRO</span></div>
+            <button class="x" type="button" data-close="mpOverlay" aria-label="Cerrar">✕</button>
+          </div>
+          <p class="mp-name">Economizador de billetera</p>
+          <div class="mp-tabs" role="tablist">
+            <button class="mp-tab on" type="button" data-mptab="ahorro">Mi ahorro</button>
+            <button class="mp-tab" type="button" data-mptab="plan">Planificar</button>
+            <button class="mp-tab" type="button" data-mptab="cupones">Cupones</button>
+          </div>
+        </div>
+        <div class="mp-body">
+          <div data-mppane="ahorro">
+            <div class="mp-card">
+              <div class="mp-muted" id="mpMonthLbl">Ahorraste este mes</div>
+              <div class="mp-big" id="mpSaved">$0</div>
+              <div class="mp-muted" id="mpSavedSub">Anotá tus compras con promo y te mostramos cuánto ahorrás.</div>
+            </div>
+            <div class="mp-card">
+              <h4>+ Anotar una compra</h4>
+              <form class="mp-form" id="mpAddForm">
+                <div class="two">
+                  <div><label class="lbl" for="mpDate">Día</label><input id="mpDate" type="date" /></div>
+                  <div><label class="lbl" for="mpAmount">Monto que pagaste</label><input id="mpAmount" type="number" inputmode="numeric" min="0" placeholder="Ej: 40000" /></div>
+                </div>
+                <div><label class="lbl" for="mpPromo">Promo que usaste</label><select id="mpPromo"></select></div>
+                <div class="mp-preview" id="mpPreview" hidden></div>
+                <button class="btn" type="submit">Guardar compra</button>
+              </form>
+            </div>
+            <div class="mp-card"><h4>Topes de tus promos</h4><div id="mpTopes"></div></div>
+            <div class="mp-card"><h4>Tus compras del mes</h4><div id="mpList"></div></div>
+          </div>
+          <div data-mppane="plan" hidden>
+            <div class="mp-card">
+              <h4>¿Cuánto vas a gastar esta semana?</h4>
+              <div class="mp-cats" id="mpCats"></div>
+              <p class="mp-muted" id="mpPlanNote" style="margin:10px 0 0"></p>
+              <button class="btn" type="button" id="mpPlanBtn" style="width:100%;margin-top:12px">Armar mi semana</button>
+            </div>
+            <div id="mpPlanOut"></div>
+          </div>
+          <div data-mppane="cupones" hidden>
+            <div id="mpCoupons"><p class="mp-muted">Cargando cupones…</p></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1434,6 +1551,231 @@
     });
 
     // ===== Inicio =====
+    // ===== Mi Pro · Economizador de billetera =====
+    const MP_KEY = "vive_pro_key";
+    const MP_DATA = "vive_pro_compras_v1";
+    const MP_PLAN = "vive_pro_plan_v1";
+    const sheetTabURL = (name) => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(name)}`;
+    const lsGet = (k, d) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } };
+    const lsSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* sin almacenamiento */ } };
+    const promoKey = (p) => p.comercio + "|" + p.medioPago;
+    const addDays = (iso, n) => { const d = fromISO(iso); d.setDate(d.getDate() + n); return toISO(d); };
+    const mondayOf = (iso) => { const d = fromISO(iso); const w = (d.getDay() + 6) % 7; d.setDate(d.getDate() - w); return toISO(d); };
+    const MP_CATS = [
+      { id: "super", name: "🛒 Súper y mayoristas" }, { id: "combustible", name: "⛽ Combustible" },
+      { id: "farmacia", name: "💊 Farmacia" }, { id: "gastro", name: "🍔 Gastronomía" },
+      { id: "barrio", name: "🏪 Locales de barrio" }, { id: "mas", name: "🛍️ Otros" }
+    ];
+    let mpHash = null, mpTab = "ahorro", mpCouponsLoaded = false;
+
+    function topePeriod(p) {
+      const t = norm(p.condiciones + " " + p.medioPago);
+      if (/mensual|por mes|al mes|por cliente por mes/.test(t)) return "mes";
+      if (/semanal|por semana|a la semana/.test(t)) return "semana";
+      if (/por transacc|por compra|por ticket|por operaci/.test(t)) return "compra";
+      return "dia";
+    }
+    const PERIOD_LBL = { mes: "este mes", semana: "esta semana", dia: "por día de promo", compra: "por compra" };
+    function periodKey(period, iso) {
+      if (period === "mes") return iso.slice(0, 7);
+      if (period === "semana") return mondayOf(iso);
+      return iso;
+    }
+    const purchases = () => lsGet(MP_DATA, []);
+    function usedTope(k, period, iso, list = purchases()) {
+      if (period === "compra") return 0;
+      const pk = periodKey(period, iso);
+      return list.filter((c) => c.k === k && periodKey(period, c.date) === pk).reduce((s, c) => s + c.ahorro, 0);
+    }
+    function savingFor(p, amount, iso, list) {
+      const raw = amount * (p.off / 100);
+      if (!p.tope) return raw;
+      const left = Math.max(0, p.tope - usedTope(promoKey(p), topePeriod(p), iso, list));
+      return Math.min(raw, left);
+    }
+    const promoByKey = (k) => PROMOS.find((p) => promoKey(p) === k);
+    const fakePromo = (c) => ({ comercio: c.comercio, medioPago: c.medio, brand: brandOf(c.comercio), place: c.place || "mas", rubro: "" });
+    const myWallets = () => (Array.isArray(state.wallets) && state.wallets.length ? state.wallets : ALL_WALLETS);
+
+    // --- Acceso con clave del mes ---
+    async function fetchProHash() {
+      try {
+        const res = await fetch(sheetTabURL("pro") + "&nc=" + Date.now(), { cache: "no-store" });
+        if (!res.ok) return null;
+        const rows = parseCSV(await res.text());
+        const h = (rows[1] && rows[1][0] || "").trim().toLowerCase();
+        return /^[0-9a-f]{64}$/.test(h) ? h : null;
+      } catch { return null; }
+    }
+    const cleanKey = (s) => String(s || "").toUpperCase().replace(/\s+/g, "");
+    function showMpApp(on) { $("mpLock").hidden = on; $("mpApp").hidden = !on; }
+    async function openPro() {
+      document.querySelectorAll(".mp-logo").forEach((img) => { if (!img.src) img.src = document.querySelector(".foot-brand img").src; });
+      $("mpJoin").href = PRO_LINK || "#";
+      $("mpErr").textContent = "";
+      openOverlay("mpOverlay");
+      const saved = lsGet(MP_KEY, "");
+      if (mpHash === null) mpHash = await fetchProHash();
+      if (saved && (!mpHash || (await sha256(saved)) === mpHash)) { showMpApp(true); renderPro(); return; }
+      if (saved && mpHash) $("mpErr").textContent = "Cambió la clave del mes: ingresá la nueva que te mandamos por WhatsApp.";
+      showMpApp(false);
+      setTimeout(() => $("mpKey").focus(), 60);
+    }
+    $("mpForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const key = cleanKey($("mpKey").value);
+      if (!key) return;
+      if (mpHash === null) mpHash = await fetchProHash();
+      if (!mpHash) { $("mpErr").textContent = "No pudimos verificar la clave ahora. Probá de nuevo en un rato."; return; }
+      if ((await sha256(key)) !== mpHash) { $("mpErr").textContent = "Clave incorrecta. Revisá la que te mandamos por WhatsApp."; return; }
+      lsSet(MP_KEY, key);
+      showMpApp(true); renderPro();
+    });
+    $("proEnter").addEventListener("click", () => { closeOverlay("proOverlay"); openPro(); });
+    $("proMine").addEventListener("click", openPro);
+
+    // --- Pestañas ---
+    document.querySelectorAll("[data-mptab]").forEach((b) => b.addEventListener("click", () => { mpTab = b.dataset.mptab; renderPro(); }));
+    function renderPro() {
+      document.querySelectorAll("[data-mptab]").forEach((b) => b.classList.toggle("on", b.dataset.mptab === mpTab));
+      document.querySelectorAll("[data-mppane]").forEach((p) => { p.hidden = p.dataset.mppane !== mpTab; });
+      if (mpTab === "ahorro") renderAhorro();
+      if (mpTab === "plan") renderPlanForm();
+      if (mpTab === "cupones") renderCoupons();
+    }
+
+    // --- Mi ahorro ---
+    function fillPromoSelect() {
+      const iso = $("mpDate").value || todayISO();
+      const mine = myWallets();
+      const list = PROMOS.filter((p) => validOn(p, iso) && inZone(p, state.zone))
+        .sort((a, b) => (mine.includes(b.medioPago) - mine.includes(a.medioPago)) || a.comercio.localeCompare(b.comercio, "es"));
+      const prev = $("mpPromo").value;
+      $("mpPromo").innerHTML = list.length
+        ? `<option value="">Elegí la promo…</option>` + list.map((p) => `<option value="${esc(promoKey(p))}">${esc(p.comercio)} · ${esc(p.off)}% con ${esc(p.medioPago)}${p.tope ? " (tope " + money(p.tope) + ")" : ""}</option>`).join("")
+        : `<option value="">No hay promos cargadas para ese día</option>`;
+      if (list.some((p) => promoKey(p) === prev)) $("mpPromo").value = prev;
+      mpPreview();
+    }
+    function mpPreview() {
+      const p = promoByKey($("mpPromo").value), amount = Number($("mpAmount").value) || 0, iso = $("mpDate").value || todayISO();
+      if (!p || !amount) { $("mpPreview").hidden = true; return; }
+      const s = savingFor(p, amount, iso);
+      const capped = p.tope && s < amount * p.off / 100;
+      $("mpPreview").hidden = false;
+      $("mpPreview").innerHTML = s > 0
+        ? `Te ahorrás <b>${money(s)}</b>${capped ? ` (llegaste al tope de ${money(p.tope)} ${PERIOD_LBL[topePeriod(p)]})` : ""}.`
+        : `Ya usaste todo el tope de esta promo ${PERIOD_LBL[topePeriod(p)]}: esta compra no suma ahorro.`;
+    }
+    ["mpAmount", "mpPromo"].forEach((id) => $(id).addEventListener("input", mpPreview));
+    $("mpDate").addEventListener("change", fillPromoSelect);
+    $("mpAddForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const p = promoByKey($("mpPromo").value), amount = Number($("mpAmount").value) || 0, iso = $("mpDate").value || todayISO();
+      if (!p) { $("mpPromo").focus(); return; }
+      if (!amount) { $("mpAmount").focus(); return; }
+      const list = purchases();
+      list.push({ id: Date.now().toString(36), k: promoKey(p), comercio: p.comercio, medio: p.medioPago, place: p.place, off: p.off, tope: p.tope, period: topePeriod(p), date: iso, monto: amount, ahorro: Math.round(savingFor(p, amount, iso, list)) });
+      lsSet(MP_DATA, list);
+      $("mpAmount").value = ""; $("mpPreview").hidden = true;
+      renderAhorro();
+    });
+    function renderAhorro() {
+      if (!$("mpDate").value) { $("mpDate").value = todayISO(); $("mpDate").max = todayISO(); }
+      if (!$("mpPromo").options.length) fillPromoSelect();
+      const today = todayISO(), month = today.slice(0, 7);
+      const all = purchases(), list = all.filter((c) => c.date.slice(0, 7) === month).sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
+      const saved = list.reduce((s, c) => s + c.ahorro, 0), spent = list.reduce((s, c) => s + c.monto, 0);
+      $("mpMonthLbl").textContent = `Ahorraste en ${MONTHS_ES[fromISO(today).getMonth()].toLowerCase()}`;
+      $("mpSaved").textContent = money(saved);
+      $("mpSavedSub").textContent = list.length ? `en ${list.length} compra${list.length === 1 ? "" : "s"} · gastaste ${money(spent)}` : "Anotá tus compras con promo y te mostramos cuánto ahorrás.";
+      // Topes del período actual
+      const seen = new Map();
+      all.forEach((c) => { if (c.tope && c.period !== "compra" && periodKey(c.period, c.date) === periodKey(c.period, today)) seen.set(c.k, c); });
+      $("mpTopes").innerHTML = seen.size ? [...seen.values()].map((c) => {
+        const used = usedTope(c.k, c.period, today, all), left = Math.max(0, c.tope - used), ratio = Math.min(1, used / c.tope);
+        const cls = left <= 0 ? "full" : ratio >= 0.6 ? "warn" : "";
+        return `<div class="mp-row"><span>${esc(c.comercio)} · ${esc(c.medio)}</span>${left <= 0 ? `<span class="tag hot">AGOTADO</span>` : `<span class="mp-muted">quedan ${money(left)} de ${money(c.tope)}</span>`}</div>
+          <div class="mp-muted" style="font-size:12px;margin-top:2px">Tope ${PERIOD_LBL[c.period]}</div><div class="mp-bar ${cls}"><i style="width:${Math.max(4, ratio * 100)}%"></i></div>`;
+      }).join("") : `<p class="mp-muted" style="margin:0">Cuando anotes compras con promos que tienen tope, acá vas a ver cuánto te queda.</p>`;
+      $("mpList").innerHTML = list.length ? list.map((c) => {
+        const p = promoByKey(c.k) || fakePromo(c);
+        return `<div class="mp-li">${storeLogo(p)}<div>${esc(c.comercio)}<div class="mp-muted">${esc(dayName(c.date).slice(0, 3))} ${shortDate(c.date)} · ${esc(c.medio)}</div></div>
+          <div class="r">${money(c.monto)}<div class="mp-green" style="font-size:12.5px">−${money(c.ahorro)}</div></div>
+          <button class="del" type="button" data-del="${esc(c.id)}" aria-label="Borrar compra">✕</button></div>`;
+      }).join("") : `<p class="mp-muted" style="margin:0">Todavía no anotaste compras este mes.</p>`;
+      $("mpList").querySelectorAll("[data-del]").forEach((b) => b.addEventListener("click", () => {
+        if (!confirm("¿Borrar esta compra?")) return;
+        lsSet(MP_DATA, purchases().filter((c) => c.id !== b.dataset.del)); renderAhorro();
+      }));
+    }
+
+    // --- Planificador ---
+    function renderPlanForm() {
+      if (!$("mpCats").children.length) {
+        const saved = lsGet(MP_PLAN, {});
+        $("mpCats").innerHTML = MP_CATS.map((c) => `<label class="mp-cat"><span>${c.name}</span><input type="number" inputmode="numeric" min="0" placeholder="$" data-cat="${c.id}" value="${saved[c.id] || ""}" /></label>`).join("");
+      }
+      const w = myWallets();
+      $("mpPlanNote").textContent = `Usamos ${w.length === ALL_WALLETS.length ? "todos los medios de pago" : w.length + " medio" + (w.length === 1 ? "" : "s") + " de pago"} y la zona ${state.zone === "TODAS" ? "(todas)" : state.zone} que elegiste en la página. Si querés cambiarlos, cerrá esto y tocá "¿Con qué pagás?".`;
+    }
+    $("mpPlanBtn").addEventListener("click", () => {
+      const amounts = {};
+      $("mpCats").querySelectorAll("[data-cat]").forEach((i) => { const v = Number(i.value) || 0; if (v > 0) amounts[i.dataset.cat] = v; });
+      lsSet(MP_PLAN, amounts);
+      if (!Object.keys(amounts).length) { $("mpPlanOut").innerHTML = `<div class="empty">Cargá cuánto pensás gastar en al menos un rubro.</div>`; return; }
+      const today = todayISO(), mine = myWallets(), picks = [];
+      for (const cat of MP_CATS) {
+        const amount = amounts[cat.id]; if (!amount) continue;
+        let best = null;
+        for (let i = 0; i < 7; i++) {
+          const iso = addDays(today, i);
+          PROMOS.filter((p) => p.place === cat.id && validOn(p, iso) && inZone(p, state.zone) && mine.includes(p.medioPago)).forEach((p) => {
+            const s = savingFor(p, amount, iso);
+            if (s > 0 && (!best || s > best.s + 0.5)) best = { p, iso, s, amount, cat };
+          });
+        }
+        picks.push(best || { cat, amount, none: true });
+      }
+      const ok = picks.filter((x) => !x.none).sort((a, b) => a.iso.localeCompare(b.iso)), none = picks.filter((x) => x.none);
+      const total = ok.reduce((s, x) => s + x.s, 0);
+      let html = `<div class="mp-card"><div class="mp-row" style="margin-bottom:4px"><h4 style="margin:0">Tu plan de la semana</h4>${ok.length ? `<span class="mp-total">AHORRÁS ${money(total)}</span>` : ""}</div>`;
+      let lastDay = "";
+      ok.forEach((x) => {
+        if (x.iso !== lastDay) { html += `<div class="mp-day">${x.iso === today ? "Hoy" : esc(dayName(x.iso))} ${shortDate(x.iso)}</div>`; lastDay = x.iso; }
+        html += `<div class="mp-li" style="border:0;padding-top:4px">${storeLogo(x.p)}<div>${esc(x.p.comercio)} <span class="mp-muted">· ${esc(x.cat.name.replace(/^\S+\s/, "").toLowerCase())}</span><div class="mp-muted">con ${esc(x.p.medioPago)} · ${esc(x.p.off)}%${x.p.tope ? " (tope " + money(x.p.tope) + ")" : ""} · gastando ${money(x.amount)}</div></div><div class="r mp-green">−${money(x.s)}</div></div>`;
+      });
+      if (none.length) html += `<p class="mp-muted" style="margin:12px 0 0">Sin promo esta semana para: ${none.map((x) => esc(x.cat.name.replace(/^\S+\s/, ""))).join(", ")}. Probá sumar más medios de pago.</p>`;
+      html += `<p class="mp-muted" style="margin:12px 0 0">Calculado con las promos cargadas y los topes que ya usaste. Verificá siempre las condiciones en el link oficial.</p></div>`;
+      $("mpPlanOut").innerHTML = html;
+    });
+
+    // --- Cupones exclusivos ---
+    async function renderCoupons() {
+      if (mpCouponsLoaded) return;
+      let rows = [];
+      try {
+        const res = await fetch(sheetTabURL("exclusivos") + "&nc=" + Date.now(), { cache: "no-store" });
+        if (res.ok) rows = parseCSV(await res.text());
+      } catch { rows = []; }
+      mpCouponsLoaded = true;
+      const head = (rows[0] || []).map(norm);
+      const get = (r, n) => { const i = head.indexOf(n); return i >= 0 ? (r[i] || "").trim() : ""; };
+      const today = todayISO();
+      const list = rows.slice(1).map((r) => ({ comercio: get(r, "comercio"), rubro: get(r, "rubro"), zonas: splitList(get(r, "zonas")), descuento: get(r, "descuento"), codigo: get(r, "codigo"), condiciones: get(r, "condiciones"), hasta: parseDate(get(r, "hasta")) }))
+        .filter((c) => c.comercio && (!c.hasta || c.hasta >= today) && (state.zone === "TODAS" || !c.zonas.length || c.zonas.includes(state.zone)));
+      $("mpCoupons").innerHTML = list.length ? list.map((c) => {
+        const p = { comercio: c.comercio, brand: brandOf(c.comercio), rubro: c.rubro || "Otros" }; p.place = placeOf(p);
+        return `<div class="mp-card mp-coupon"><div class="mp-row"><span style="display:flex;align-items:center;gap:10px">${storeLogo(p)}${esc(c.comercio)}</span><span class="mp-total">${esc(c.descuento)}</span></div>
+          ${c.codigo ? `<div class="mp-code"><span>${esc(c.codigo)}</span><button class="btn ghost small" type="button" data-copy="${esc(c.codigo)}">Copiar</button></div>` : ""}
+          ${c.condiciones ? `<div class="mp-muted">${esc(c.condiciones)}</div>` : ""}
+          ${c.hasta ? `<div class="mp-muted">Válido hasta el ${shortDate(c.hasta)}</div>` : ""}</div>`;
+      }).join("") : `<div class="empty"><b style="color:var(--ink)">Muy pronto</b><br>Estamos sumando comercios con descuentos solo para suscriptores Pro. Te avisamos por WhatsApp apenas estén.</div>`;
+      $("mpCoupons").querySelectorAll("[data-copy]").forEach((b) => b.addEventListener("click", async () => {
+        try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = "¡Copiado!"; } catch { b.textContent = b.dataset.copy; }
+      }));
+    }
+
     async function init() {
       paintThemeBtn();
       fillDateSelect($("dateSelect"), state.date);
@@ -1455,6 +1797,7 @@
       if (state.zone !== "TODAS" && !zones.includes(state.zone)) state.zone = "TODAS";
       renderAll();
       if (location.hash === "#placas") $("lockBtn").click();
+      if (location.hash === "#pro") openPro();
     }
     init();
   }
