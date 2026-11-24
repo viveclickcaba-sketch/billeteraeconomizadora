@@ -305,6 +305,9 @@
     .previews { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 16px; margin-top: 16px; }
     .prev { display: flex; flex-direction: column; gap: 8px; }
     .prev canvas { width: 100%; height: auto; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,.4); background: #000; }
+    .links-box { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; margin: 0 0 16px; }
+    .links-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .links-row a { display: inline-flex; align-items: center; text-decoration: none; }
 
     @media (max-width: 1000px) {
       .tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -627,6 +630,16 @@
         <button class="x" type="button" data-close="genOverlay" aria-label="Cerrar">✕</button>
       </div>
 
+      <div class="links-box">
+        <span class="lbl">🔗 Links útiles</span>
+        <div class="links-row">
+          <a class="btn ghost small" href="https://docs.google.com/spreadsheets/d/1NZgct_dQ17cDHsGmOmGDmnFreys2gtros8fnp1kJssY/edit" target="_blank" rel="noopener">📊 Planilla de promos</a>
+          <a class="btn ghost small" href="https://docs.google.com/forms/d/1Xt0xMh5Lf-OwR9auPDd6LE4bYtdoJ4yS-sqLjRRXjHE/edit" target="_blank" rel="noopener">📝 Formulario Pro (editar)</a>
+          <a class="btn ghost small" href="https://docs.google.com/spreadsheets/d/18kGNFXo0ZifuFbR7j7zGMGKPRSuIRFuzuDDrN9qCq68/edit" target="_blank" rel="noopener">📋 Suscriptores (respuestas)</a>
+          <a class="btn ghost small" href="https://www.mercadopago.com.ar/subscription-plans/list" target="_blank" rel="noopener">💳 Suscripciones Mercado Pago</a>
+        </div>
+      </div>
+
       <div class="gen-controls">
         <div>
           <label class="lbl" for="genDate">Día de las promos</label>
@@ -659,6 +672,7 @@
         <button class="btn" type="button" id="genEach">Generar una placa por promo</button>
         <button class="btn ghost" type="button" id="genOne">Juntar en una sola placa</button>
         <button class="btn ghost" type="button" id="clearPick">Destildar todo</button>
+        <button class="btn ghost" type="button" id="genApp">📣 Placa para promocionar la app</button>
         <span class="sel-count" id="selCount">0 promos tildadas</span>
       </div>
       <div class="pw-err" id="genMsg"></div>
@@ -1570,6 +1584,67 @@
       await fontsReady();
       $("genMsg").textContent = "Cargando logos…"; await preloadLogos(list); $("genMsg").textContent = "";
       showPreviews([{ canvas: drawCombined(list, gen.format), name: `vive-promos-${gen.date}-${gen.format}.png` }]);
+    });
+
+    // ----- Placa para promocionar la app -----
+    const APP_TITLE = "¿Pagás sin descuento? Estás perdiendo plata";
+    const APP_SUB = "Todas las promos de bancos, billeteras y súper, actualizadas cada día. Gratis.";
+    const APP_POINTS = ["Filtrás por zona, comercio y banco", "Calculás cuánto ahorrás", "La instalás gratis como app"];
+    const APP_URL = "economizadordebilletera.netlify.app";
+    function appContent(ctx, format, y0) {
+      const [W] = SIZES[format];
+      const st = format === "story";
+      const M = 90, maxW = W - M * 2;
+      let y = y0;
+      ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
+      ctx.fillStyle = "#ff0000"; ctx.font = F(800, st ? 42 : 36);
+      y += st ? 42 : 36; ctx.fillText("OFERTAS DEL DÍA", M, y);
+      y += 24;
+      let t = fitText(ctx, APP_TITLE, 800, st ? 118 : 96, 60, maxW, 4);
+      ctx.fillStyle = "#ffffff";
+      t.lines.forEach((l) => { y += t.size * 1.04; ctx.font = F(800, t.size); ctx.fillText(l, M, y); });
+      y += st ? 46 : 34;
+      t = fitText(ctx, APP_SUB, 500, st ? 46 : 38, 28, maxW, 3);
+      ctx.fillStyle = "rgba(255,255,255,0.8)";
+      t.lines.forEach((l) => { y += t.size * 1.3; ctx.font = F(500, t.size); ctx.fillText(l, M, y); });
+      y += st ? 56 : 40;
+      const bs = st ? 40 : 34, rowH = st ? 84 : 66, r = bs * 0.75;
+      APP_POINTS.forEach((txt) => {
+        const cy = y + rowH / 2;
+        ctx.beginPath(); ctx.arc(M + r, cy, r, 0, Math.PI * 2); ctx.fillStyle = "#ff0000"; ctx.fill();
+        ctx.fillStyle = "#ffffff"; ctx.font = F(800, bs * 0.85); ctx.textAlign = "center"; ctx.textBaseline = "middle";
+        ctx.fillText("✓", M + r, cy + 2);
+        ctx.textAlign = "left"; ctx.font = F(700, bs);
+        ctx.fillText(txt, M + r * 2 + 22, cy + 2);
+        ctx.textBaseline = "alphabetic";
+        y += rowH;
+      });
+      y += st ? 40 : 30;
+      let ps = st ? 38 : 34;
+      ctx.font = F(700, ps);
+      while (ctx.measureText(APP_URL).width + ps * 1.3 > maxW && ps > 20) { ps -= 2; ctx.font = F(700, ps); }
+      pill(ctx, M, y, APP_URL, ps, "#ffffff", "#0b0b0d");
+      y += ps * 1.75;
+      return y;
+    }
+    function drawAppPromo(format) {
+      const [W, H] = SIZES[format];
+      const scratch = document.createElement("canvas").getContext("2d");
+      const h = appContent(scratch, format, 0);
+      const c = document.createElement("canvas"); c.width = W; c.height = H;
+      const ctx = c.getContext("2d");
+      background(ctx, W, H);
+      drawLogo(ctx, W, H, format);
+      const top = format === "story" ? 280 : 70;
+      const bottom = format === "story" ? (useLink(format) ? H - 360 : H - 180) : H - 170;
+      appContent(ctx, format, Math.max(top, top + (bottom - top - h) / 2));
+      if (useLink(format)) linkSpace(ctx, W, H);
+      return c;
+    }
+    $("genApp").addEventListener("click", async () => {
+      $("genMsg").textContent = "";
+      await fontsReady();
+      showPreviews([{ canvas: drawAppPromo(gen.format), name: `vive-app-ofertas-${gen.format}.png` }]);
     });
 
 
