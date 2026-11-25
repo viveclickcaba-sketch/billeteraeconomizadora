@@ -305,9 +305,6 @@
     .previews { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 16px; margin-top: 16px; }
     .prev { display: flex; flex-direction: column; gap: 8px; }
     .prev canvas { width: 100%; height: auto; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,.4); background: #000; }
-    .links-box { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; margin: 0 0 16px; }
-    .links-row { display: flex; flex-wrap: wrap; gap: 8px; }
-    .links-row a { display: inline-flex; align-items: center; text-decoration: none; }
 
     @media (max-width: 1000px) {
       .tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -389,6 +386,15 @@
     .inst-ico svg { width: 15px; height: 15px; }
     @media (max-width: 420px) { .install-btn { padding: 0 11px; height: 38px; font-size: 13px; gap: 5px; } .install-btn svg { width: 15px; height: 15px; } }
     @media (max-width: 350px) { .install-btn span { display: none; } }
+    /* ===== Bienvenida con nombre ===== */
+    .welcome { max-width: 400px; text-align: center; padding: 30px 24px 22px; }
+    .welcome img { height: 34px; }
+    .welcome .wave { font-size: 34px; line-height: 1; margin-top: 10px; }
+    .welcome h3 { margin: 12px 0 6px; }
+    .welcome input { width: 100%; height: 50px; font-size: 17px; text-align: center; }
+    .welcome .btn { width: 100%; height: 50px; margin-top: 12px; }
+    .welcome .skip { background: none; border: 0; color: var(--muted); font-size: 13.5px; margin-top: 14px; text-decoration: underline; cursor: pointer; padding: 6px; }
+    .hello { font: 700 15px "Montserrat", sans-serif; color: var(--ink2); margin: 10px 0 6px; }
   </style>
 </head>
 <body>
@@ -406,6 +412,7 @@
       <div class="hero-main">
         <div>
           <span class="eyebrow"><i></i>Ahorro diario inteligente</span>
+          <div class="hello" id="helloLine" hidden></div>
           <h1>Ofertas del día</h1>
           <p class="lead" id="heroLead">Todas las promos de bancos, billeteras y clubes que valen hoy, en un solo lugar.</p>
           <div class="hero-stats">
@@ -600,6 +607,21 @@
     </div>
   </div>
 
+  <!-- Bienvenida: pide el nombre la primera vez -->
+  <div class="overlay" id="welcomeOverlay">
+    <div class="modal welcome" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
+      <img class="mp-logo" alt="VIVE" />
+      <div class="wave" aria-hidden="true">👋</div>
+      <h3 id="welcomeTitle">¡Bienvenido/a a Ofertas del día!</h3>
+      <p class="sub" style="margin:0 0 18px">¿Cómo te llamás? Así te saludamos por tu nombre.</p>
+      <form id="welcomeForm">
+        <input id="welcomeName" type="text" maxlength="40" autocomplete="given-name" placeholder="Tu nombre" aria-label="Tu nombre" />
+        <button class="btn" type="submit">Entrar</button>
+      </form>
+      <button class="skip" type="button" id="welcomeSkip">Entrar sin poner nombre</button>
+    </div>
+  </div>
+
   <!-- Acceso a Placas VIVE -->
   <div class="overlay" id="pwOverlay">
     <div class="modal narrow" role="dialog" aria-modal="true" aria-labelledby="pwTitle">
@@ -628,16 +650,6 @@
           <p class="sub">Tildá las promos que quieras y generá las placas para Instagram. No se arma nada hasta que toques un botón.</p>
         </div>
         <button class="x" type="button" data-close="genOverlay" aria-label="Cerrar">✕</button>
-      </div>
-
-      <div class="links-box">
-        <span class="lbl">🔗 Links útiles</span>
-        <div class="links-row">
-          <a class="btn ghost small" href="https://docs.google.com/spreadsheets/d/1NZgct_dQ17cDHsGmOmGDmnFreys2gtros8fnp1kJssY/edit" target="_blank" rel="noopener">📊 Planilla de promos</a>
-          <a class="btn ghost small" href="https://docs.google.com/forms/d/1Xt0xMh5Lf-OwR9auPDd6LE4bYtdoJ4yS-sqLjRRXjHE/edit" target="_blank" rel="noopener">📝 Formulario Pro (editar)</a>
-          <a class="btn ghost small" href="https://docs.google.com/spreadsheets/d/18kGNFXo0ZifuFbR7j7zGMGKPRSuIRFuzuDDrN9qCq68/edit" target="_blank" rel="noopener">📋 Suscriptores (respuestas)</a>
-          <a class="btn ghost small" href="https://www.mercadopago.com.ar/subscription-plans/list" target="_blank" rel="noopener">💳 Suscripciones Mercado Pago</a>
-        </div>
       </div>
 
       <div class="gen-controls">
@@ -672,7 +684,6 @@
         <button class="btn" type="button" id="genEach">Generar una placa por promo</button>
         <button class="btn ghost" type="button" id="genOne">Juntar en una sola placa</button>
         <button class="btn ghost" type="button" id="clearPick">Destildar todo</button>
-        <button class="btn ghost" type="button" id="genApp">📣 Placa para promocionar la app</button>
         <span class="sel-count" id="selCount">0 promos tildadas</span>
       </div>
       <div class="pw-err" id="genMsg"></div>
@@ -1172,8 +1183,8 @@
     function openOverlay(id) { $(id).classList.add("open"); document.body.style.overflow = "hidden"; }
     function closeOverlay(id) { $(id).classList.remove("open"); document.body.style.overflow = ""; }
     document.querySelectorAll("[data-close]").forEach((b) => b.addEventListener("click", () => closeOverlay(b.dataset.close)));
-    document.querySelectorAll(".overlay").forEach((o) => o.addEventListener("click", (e) => { if (e.target === o) closeOverlay(o.id); }));
-    document.addEventListener("keydown", (e) => { if (e.key === "Escape") document.querySelectorAll(".overlay.open").forEach((o) => closeOverlay(o.id)); });
+    document.querySelectorAll(".overlay").forEach((o) => o.addEventListener("click", (e) => { if (e.target === o && o.id !== "welcomeOverlay") closeOverlay(o.id); }));
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") document.querySelectorAll(".overlay.open").forEach((o) => { if (o.id !== "welcomeOverlay") closeOverlay(o.id); }); });
 
     let unlocked = false;
     try { unlocked = sessionStorage.getItem("placas_ok") === "1"; } catch { /* nada */ }
@@ -1586,67 +1597,6 @@
       showPreviews([{ canvas: drawCombined(list, gen.format), name: `vive-promos-${gen.date}-${gen.format}.png` }]);
     });
 
-    // ----- Placa para promocionar la app -----
-    const APP_TITLE = "¿Pagás sin descuento? Estás perdiendo plata";
-    const APP_SUB = "Todas las promos de bancos, billeteras y súper, actualizadas cada día. Gratis.";
-    const APP_POINTS = ["Filtrás por zona, comercio y banco", "Calculás cuánto ahorrás", "La instalás gratis como app"];
-    const APP_URL = "economizadordebilletera.netlify.app";
-    function appContent(ctx, format, y0) {
-      const [W] = SIZES[format];
-      const st = format === "story";
-      const M = 90, maxW = W - M * 2;
-      let y = y0;
-      ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
-      ctx.fillStyle = "#ff0000"; ctx.font = F(800, st ? 42 : 36);
-      y += st ? 42 : 36; ctx.fillText("OFERTAS DEL DÍA", M, y);
-      y += 24;
-      let t = fitText(ctx, APP_TITLE, 800, st ? 118 : 96, 60, maxW, 4);
-      ctx.fillStyle = "#ffffff";
-      t.lines.forEach((l) => { y += t.size * 1.04; ctx.font = F(800, t.size); ctx.fillText(l, M, y); });
-      y += st ? 46 : 34;
-      t = fitText(ctx, APP_SUB, 500, st ? 46 : 38, 28, maxW, 3);
-      ctx.fillStyle = "rgba(255,255,255,0.8)";
-      t.lines.forEach((l) => { y += t.size * 1.3; ctx.font = F(500, t.size); ctx.fillText(l, M, y); });
-      y += st ? 56 : 40;
-      const bs = st ? 40 : 34, rowH = st ? 84 : 66, r = bs * 0.75;
-      APP_POINTS.forEach((txt) => {
-        const cy = y + rowH / 2;
-        ctx.beginPath(); ctx.arc(M + r, cy, r, 0, Math.PI * 2); ctx.fillStyle = "#ff0000"; ctx.fill();
-        ctx.fillStyle = "#ffffff"; ctx.font = F(800, bs * 0.85); ctx.textAlign = "center"; ctx.textBaseline = "middle";
-        ctx.fillText("✓", M + r, cy + 2);
-        ctx.textAlign = "left"; ctx.font = F(700, bs);
-        ctx.fillText(txt, M + r * 2 + 22, cy + 2);
-        ctx.textBaseline = "alphabetic";
-        y += rowH;
-      });
-      y += st ? 40 : 30;
-      let ps = st ? 38 : 34;
-      ctx.font = F(700, ps);
-      while (ctx.measureText(APP_URL).width + ps * 1.3 > maxW && ps > 20) { ps -= 2; ctx.font = F(700, ps); }
-      pill(ctx, M, y, APP_URL, ps, "#ffffff", "#0b0b0d");
-      y += ps * 1.75;
-      return y;
-    }
-    function drawAppPromo(format) {
-      const [W, H] = SIZES[format];
-      const scratch = document.createElement("canvas").getContext("2d");
-      const h = appContent(scratch, format, 0);
-      const c = document.createElement("canvas"); c.width = W; c.height = H;
-      const ctx = c.getContext("2d");
-      background(ctx, W, H);
-      drawLogo(ctx, W, H, format);
-      const top = format === "story" ? 280 : 70;
-      const bottom = format === "story" ? (useLink(format) ? H - 360 : H - 180) : H - 170;
-      appContent(ctx, format, Math.max(top, top + (bottom - top - h) / 2));
-      if (useLink(format)) linkSpace(ctx, W, H);
-      return c;
-    }
-    $("genApp").addEventListener("click", async () => {
-      $("genMsg").textContent = "";
-      await fontsReady();
-      showPreviews([{ canvas: drawAppPromo(gen.format), name: `vive-app-ofertas-${gen.format}.png` }]);
-    });
-
 
     // ===== Pro =====
     $("proOpen").addEventListener("click", () => {
@@ -1926,6 +1876,43 @@
       openOverlay("installOverlay");
     });
 
+    // ===== Bienvenida y contador de visitas =====
+    // Manda el nombre y la fecha/hora a un formulario de Google oculto (planilla "Visitas VIVE (Respuestas)")
+    const VISIT_FORM = "https://docs.google.com/forms/d/e/1FAIpQLSdz09Zw2O8FULpvz_ellnZA2ereGMHEeZg4uxer6nriS7UCvA/formResponse";
+    const VISIT_NAME = "entry.1069302035", VISIT_DATE = "entry.1096547715";
+    const VISIT_KEY = "vive_visita_v1";
+    function nowAR() {
+      return new Intl.DateTimeFormat("es-AR", { timeZone: "America/Argentina/Buenos_Aires", day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }).format(new Date()).replace(",", "");
+    }
+    function sendVisit(name) {
+      const body = new URLSearchParams({ [VISIT_NAME]: name, [VISIT_DATE]: nowAR() });
+      try { fetch(VISIT_FORM, { method: "POST", mode: "no-cors", body, keepalive: true }).catch(() => {}); } catch { /* sin conexión: no pasa nada */ }
+    }
+    function showHello() {
+      const v = lsGet(VISIT_KEY, null);
+      const first = v && v.name ? v.name.trim().split(/\s+/)[0] : "";
+      $("helloLine").hidden = !first;
+      if (first) $("helloLine").textContent = `¡Hola, ${first}! 👋`;
+    }
+    function finishWelcome(name) {
+      const clean = String(name || "").replace(/\s+/g, " ").trim().slice(0, 40);
+      lsSet(VISIT_KEY, { name: clean, at: new Date().toISOString() });
+      sendVisit(clean || "Sin nombre");
+      closeOverlay("welcomeOverlay");
+      showHello();
+    }
+    $("welcomeForm").addEventListener("submit", (e) => { e.preventDefault(); const n = $("welcomeName").value.trim(); if (!n) { $("welcomeName").focus(); return; } finishWelcome(n); });
+    $("welcomeSkip").addEventListener("click", () => finishWelcome(""));
+    function maybeWelcome() {
+      showHello();
+      if (lsGet(VISIT_KEY, null)) return false;
+      if (location.hash === "#placas" || location.hash === "#pro") return false;
+      const img = document.querySelector("#welcomeOverlay .mp-logo"); if (img && !img.src) img.src = document.querySelector(".foot-brand img").src;
+      openOverlay("welcomeOverlay");
+      setTimeout(() => $("welcomeName").focus(), 80);
+      return true;
+    }
+
     async function init() {
       paintThemeBtn();
       fillDateSelect($("dateSelect"), state.date);
@@ -1946,6 +1933,7 @@
       const zones = uniq(PROMOS.flatMap((p) => p.zonas));
       if (state.zone !== "TODAS" && !zones.includes(state.zone)) state.zone = "TODAS";
       renderAll();
+      maybeWelcome();
       if (location.hash === "#placas") $("lockBtn").click();
       if (location.hash === "#pro") openPro();
     }
