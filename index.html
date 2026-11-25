@@ -294,7 +294,7 @@
     .pick-list { max-height: 340px; overflow-y: auto; border: 1px solid var(--line); border-radius: 14px; }
     .pick-group { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 10px 12px; background: var(--card2); font: 800 14px "Montserrat", sans-serif; position: sticky; top: 0; z-index: 1; }
     .pick-group small { font: 500 13px "Inter", sans-serif; color: var(--muted); }
-    .pick { display: grid; grid-template-columns: 28px 64px minmax(0, 1fr); align-items: center; gap: 10px; padding: 10px 12px; border-bottom: 1px solid var(--line); cursor: pointer; }
+    .pick { display: grid; grid-template-columns: 28px 64px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 10px 12px; border-bottom: 1px solid var(--line); cursor: pointer; }
     .pick:last-child { border-bottom: 0; }
     .pick input { width: 20px; height: 20px; accent-color: var(--red); }
     .pick .p { font: 800 20px "Montserrat", sans-serif; }
@@ -395,6 +395,13 @@
     .welcome .btn { width: 100%; height: 50px; margin-top: 12px; }
     .welcome .skip { background: none; border: 0; color: var(--muted); font-size: 13.5px; margin-top: 14px; text-decoration: underline; cursor: pointer; padding: 6px; }
     .hello { font: 700 15px "Montserrat", sans-serif; color: var(--ink2); margin: 10px 0 6px; }
+    /* ===== Mejor del día elegida a mano ===== */
+    .pick { position: relative; }
+    .star-btn { margin-left: auto; flex: none; border: 1px solid var(--line); background: var(--card2); color: var(--muted); border-radius: 999px; font: 700 12px "Montserrat", sans-serif; padding: 6px 10px; cursor: pointer; white-space: nowrap; }
+    .star-btn.on { background: #f59e0b; border-color: #f59e0b; color: #111; }
+    .star-note { margin: 10px 12px 4px; padding: 10px 12px; border-radius: 12px; background: var(--card2); border: 1px solid var(--line); font-size: 13.5px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .star-note b { color: #f59e0b; }
+    .star-note .btn { margin-left: auto; }
   </style>
 </head>
 <body>
@@ -678,6 +685,7 @@
         <input type="checkbox" id="genLink" checked style="width:18px;height:18px;accent-color:var(--red)" />
         Dejar espacio para pegar el enlace (solo historias)
       </label>
+      <div class="star-note" id="starNote"></div>
       <div class="pick-list" id="pickList"></div>
 
       <div class="gen-actions">
@@ -701,6 +709,7 @@
     // ===== Configuración =====
     const SHEET_ID = "1NZgct_dQ17cDHsGmOmGDmnFreys2gtros8fnp1kJssY";
     const SHEET_URLS = [
+      `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Untitled`,
       `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=0`,
       `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`
     ];
@@ -1039,7 +1048,8 @@
 
     function renderBest() {
       const list = baseList().sort((a, b) => b.off - a.off || potential(b) - potential(a));
-      const p = list[0];
+      const chosen = PICKS[state.date] ? list.find((x) => pickKey(x) === PICKS[state.date]) : null;
+      const p = chosen || list[0];
       if (!p) { $("bestBox").innerHTML = ""; return; }
       const link = safeLink(p.fuente);
       $("bestBox").innerHTML = `
@@ -1243,8 +1253,10 @@
           <input type="checkbox" data-pick="${p.id}" ${gen.picked.has(p.id) ? "checked" : ""} />
           <span class="p">${esc(p.off)}%</span>
           <span><span class="t">${esc(p.comercio)}</span><br><span class="s">${esc(p.medioPago)} · ${p.tope ? "Tope " + money(p.tope) : "Sin tope"}${p.hasta ? " · Hasta " + shortDate(p.hasta) : ""}</span></span>
+          <button type="button" class="star-btn${PICKS[gen.date] === pickKey(p) ? " on" : ""}" data-star="${p.id}" title="Elegir como la mejor del día">⭐ ${PICKS[gen.date] === pickKey(p) ? "Elegida" : "Mejor del día"}</button>
         </label>`).join("")}`).join("");
       updateSelCount();
+      renderStarNote();
     }
     function updateSelCount() {
       const n = gen.picked.size;
@@ -1257,6 +1269,16 @@
       updateSelCount();
     });
     $("genDate").addEventListener("change", (e) => { gen.date = e.target.value; gen.picked.clear(); renderPickList(); });
+    // ⭐ Elegir la mejor del día (se guarda en la pestaña "destacada" de la planilla, vía formulario oculto)
+    $("pickList").addEventListener("click", (e) => {
+      const b = e.target.closest("[data-star]");
+      if (!b) return;
+      e.preventDefault(); e.stopPropagation();
+      const p = PROMOS.find((x) => String(x.id) === b.dataset.star);
+      if (!p) return;
+      setPick(gen.date, PICKS[gen.date] === pickKey(p) ? "AUTO" : pickKey(p));
+    }, true);
+    $("starNote").addEventListener("click", (e) => { if (e.target.closest("[data-star-auto]")) setPick(gen.date, "AUTO"); });
     $("genZone").addEventListener("change", (e) => { gen.zone = e.target.value; gen.picked.clear(); renderPickList(); });
     $("pickList").addEventListener("click", (e) => {
       const b = e.target.closest("[data-pick-all]"); if (!b) return;
@@ -1912,10 +1934,59 @@
       return true;
     }
 
+    // ===== Mejor del día elegida a mano =====
+    const PICK_FORM = "https://docs.google.com/forms/d/e/1FAIpQLSca7rxElTL-Reg2FrYaPp5GA0dS86X04EUU52U4_A4YLjiYyQ/formResponse";
+    const PICK_PROMO = "entry.1839187139", PICK_DATE = "entry.1040729300";
+    let PICKS = {};
+    const pickKey = (p) => [p.comercio, p.medioPago, p.off].join(" | ");
+    async function loadPicks() {
+      try {
+        const res = await fetch(sheetTabURL("destacada") + "&nc=" + Date.now(), { cache: "no-store" });
+        if (!res.ok) return;
+        const rows = parseCSV(await res.text()).slice(1);
+        const map = {};
+        rows.forEach((r) => { const k = (r[1] || "").trim(), d = (r[2] || "").trim().replace(/^'/, ""); if (k && /^\d{4}-\d{2}-\d{2}$/.test(d)) map[d] = k; });
+        Object.keys(map).forEach((d) => { if (map[d] === "AUTO") delete map[d]; });
+        PICKS = map;
+      } catch { /* sin conexión: queda la automática */ }
+    }
+    function renderStarNote() {
+      const k = PICKS[gen.date];
+      const label = gen.date === todayISO() ? "hoy" : `el ${dayName(gen.date).toLowerCase()} ${shortDate(gen.date)}`;
+      $("starNote").innerHTML = k
+        ? `<span>⭐ Mejor del día ${label}: <b>${esc(k.replace(/ \| (\d+)$/, " · $1%").replace(/ \| /g, " · "))}</b></span><button type="button" class="btn ghost small" data-star-auto>Volver a automático</button>`
+        : `<span>⭐ Mejor del día ${label}: <b>automática</b> (la de mayor descuento). Tocá "⭐ Mejor del día" en una promo para elegirla vos.</span>`;
+    }
+    function setPick(date, key) {
+      if (key === "AUTO") delete PICKS[date]; else PICKS[date] = key;
+      const body = new URLSearchParams({ [PICK_PROMO]: key, [PICK_DATE]: date });
+      try { fetch(PICK_FORM, { method: "POST", mode: "no-cors", body }).catch(() => { $("genMsg").textContent = "No se pudo guardar la elección. Revisá la conexión y probá de nuevo."; }); } catch { /* nada */ }
+      $("genMsg").textContent = key === "AUTO" ? "Listo: la mejor del día vuelve a ser automática." : "Listo: la elegiste como la mejor del día. En unos segundos la ven todos.";
+      renderPickList();
+      renderBest();
+    }
+
+    // ===== Si cambió el día con la página abierta, actualizar =====
+    let loadedDay = todayISO();
+    function checkNewDay() {
+      const now = todayISO();
+      if (now === loadedDay) return;
+      const prev = loadedDay; loadedDay = now;
+      if (!document.querySelector(".overlay.open")) { location.reload(); return; }
+      // Hay algo abierto (por ejemplo Placas): no cortar, solo pasar la fecha a hoy
+      if (state.date === prev) { state.date = now; fillDateSelect($("dateSelect"), now); }
+      if (gen.date === prev) { gen.date = now; fillDateSelect($("genDate"), now); gen.picked.clear(); renderPickList(); }
+      loadPicks().then(() => { renderAll(); });
+    }
+    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") checkNewDay(); });
+    window.addEventListener("focus", checkNewDay);
+    window.addEventListener("pageshow", checkNewDay);
+    setInterval(checkNewDay, 60000);
+
     async function init() {
       paintThemeBtn();
       fillDateSelect($("dateSelect"), state.date);
-      const promos = await loadPromos();
+      const [promos] = await Promise.all([loadPromos(), loadPicks()]);
       if (!promos) {
         $("statusNote").className = "notice error";
         $("statusNote").textContent = "No se pudieron cargar las promos en este momento. Probá recargar la página en unos minutos.";
