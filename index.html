@@ -248,6 +248,17 @@
     .pro-banner h2 { font: 800 22px/1.2 "Montserrat", sans-serif; margin: 0 0 4px; }
     .pro-banner p { margin: 0; color: var(--ink2); font-size: 15px; max-width: 60ch; }
     .btn.pro { height: 48px; padding: 0 22px; font-size: 16px; }
+    .pro-banner { border: 2px solid var(--red); background: radial-gradient(420px 220px at 100% 0%, rgba(255,200,0,.18), transparent 70%), linear-gradient(120deg, rgba(255,0,0,.32), rgba(255,0,0,.06) 65%), var(--card); box-shadow: 0 12px 40px rgba(255,26,26,.22); }
+    .pro-badge { display: inline-block; background: linear-gradient(90deg,#ffcc33,#ff9f1a); color: #111; font: 900 12px "Montserrat", sans-serif; letter-spacing: .1em; padding: 5px 10px; border-radius: 999px; margin-bottom: 10px; }
+    .pro-banner h2 { font-size: 26px; text-transform: uppercase; letter-spacing: -.01em; }
+    .btn.pro { height: 58px; padding: 0 28px; font-size: 18px; font-weight: 800; box-shadow: 0 10px 26px rgba(255,26,26,.45); animation: proPulse 2.2s ease-in-out infinite; }
+    @keyframes proPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+    @media (prefers-reduced-motion: reduce) { .btn.pro { animation: none; } }
+    .sg-plus { width: 84px; height: 84px; flex: none; border-radius: 22px; border: 2px dashed var(--red); background: var(--red-soft); color: var(--red); font: 900 64px/1 "Montserrat", sans-serif; cursor: pointer; display: grid; place-items: center; padding-bottom: 6px; }
+    .suggest .suggest-box { display: grid; grid-template-columns: 84px 1fr; align-items: center; gap: 14px 16px; }
+    .suggest .suggest-box > div { grid-column: 2; grid-row: 1; }
+    .suggest .suggest-box .sg-plus { grid-column: 1; grid-row: 1; }
+    .suggest .suggest-box #sgOpen { grid-column: 1 / -1; }
     .modal.pro-modal { max-width: 560px; margin-top: 6vh; }
     .pro-price { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin: 6px 0 4px; }
     .pro-price b { font: 800 44px/1 "Montserrat", sans-serif; }
@@ -424,6 +435,8 @@
     .sg-form input, .sg-form textarea, .sg-form select { width: 100%; }
     .sg-form textarea { min-height: 84px; resize: vertical; font: inherit; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--card2); color: var(--ink); }
     .sg-two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .sg-press { margin: -4px 0 14px; padding: 12px 14px; border-radius: 12px; background: rgba(255,200,0,.1); border: 1px solid rgba(255,200,0,.35); font-size: 14px; line-height: 1.45; }
+    .suggest-box p a { color: var(--red); }
     .sg-ok { text-align: center; padding: 24px 6px 8px; }
     .sg-ok .big { font-size: 44px; }
     @media (max-width: 520px) { .sg-two { grid-template-columns: 1fr; } }
@@ -438,7 +451,70 @@
     .pay-select select { width: 100%; height: 56px; padding: 0 48px 0 16px; border-radius: 16px; border: 2px solid var(--red); background: var(--card); color: var(--ink); font: 700 16px "Inter", sans-serif; appearance: none; -webkit-appearance: none; cursor: pointer; }
     .pay-select::after { content: "▾"; position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: var(--red); font-size: 18px; pointer-events: none; }
     .pay-multi { background: none; border: 0; color: var(--muted); font-size: 13.5px; text-decoration: underline; cursor: pointer; padding: 8px 2px 0; }
-    #payToggle { display: none; }
+    .pay-dd { width: 100%; height: 56px; padding: 0 16px; border-radius: 16px; border: 2px solid var(--red); background: var(--card); color: var(--ink); font: 700 16px "Inter", sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 10px; text-align: left; }
+    .pay-dd span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .pay-dd .caret { color: var(--red); font-size: 18px; transition: transform .2s; }
+    .pay-dd[aria-expanded="true"] .caret { transform: rotate(180deg); }
+    .pay-hint { color: var(--muted); font-size: 13px; padding: 7px 2px 0; }
+    #payPanel { max-height: 60vh; overflow-y: auto; padding: 12px; }
+    #payPanel .pay-actions { position: sticky; bottom: -12px; background: var(--bg2); padding: 10px 0 4px; margin-top: 10px; }
+    #payPanel .pay-actions .btn { width: 100%; }
+    .pay-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 6px; }
+    .pay-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); cursor: pointer; font-size: 14.5px; }
+    .pay-row input { width: 20px; height: 20px; accent-color: var(--red); flex: none; margin: 0; }
+    .pay-row.on { border-color: var(--red); background: var(--red-soft); }
+    .pay-all { margin-bottom: 14px; font-weight: 700; }
+    .top-lbl { font: 700 13.5px "Inter", sans-serif; color: var(--muted); margin: 4px 2px 10px; }
+    .top-pay { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+    @media (max-width: 560px) { .top-pay { gap: 6px; } .tp { padding: 10px 2px 8px; border-radius: 14px; gap: 5px; } .tp .bl { width: 40px; height: 40px; border-radius: 12px; } .tp .bl img { width: 28px; height: 28px; } .tp b { font-size: 11px; } .tp small { font-size: 10px; } }
+    .tp { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 6px 10px; border-radius: 16px; border: 1px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; text-align: center; }
+    .tp .bl { width: 48px; height: 48px; border-radius: 14px; }
+    .tp .bl img { width: 34px; height: 34px; }
+    .tp .bl .ini { font-size: 15px; }
+    .tp b { font: 700 13px "Inter", sans-serif; line-height: 1.15; }
+    .tp small { font: 800 11.5px "Montserrat", sans-serif; color: var(--green); }
+    .tp.zero { opacity: .5; } .tp.zero small { color: var(--muted); }
+    .tp.on { border: 2px solid var(--red); background: var(--red-soft); }
+    .all-today { margin-top: 10px; background: none; border: 0; color: var(--red); font: 700 14px "Inter", sans-serif; text-decoration: underline; cursor: pointer; padding: 4px 2px; }
+    .finder .tiles { grid-template-columns: repeat(9, minmax(0, 1fr)); grid-auto-rows: 1fr; }
+    .finder .tile { aspect-ratio: 1 / 1; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 4px; padding: 10px 6px; }
+    .finder .tile b { font-size: 13px; line-height: 1.15; overflow-wrap: anywhere; }
+    .finder .tile small { font-size: 11.5px; }
+    @media (max-width: 1100px) { .finder .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 560px; } }
+    .tile-add { display: inline-block; margin-top: 4px; padding: 5px 9px; border-radius: 999px; background: var(--red); color: #fff; font: 800 12px "Montserrat", sans-serif; }
+    @media (max-width: 760px) {
+      .finder .tiles { gap: 8px; }
+      .finder .tile b { font-size: 12.5px; }
+    }
+    .miss { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: space-between; margin-top: 10px; padding: 12px 14px; border-radius: 14px; border: 1px dashed var(--red); background: var(--red-soft); font-size: 14px; }
+    .miss[hidden] { display: none; }
+    .pay-find { width: 100%; height: 46px; padding: 0 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--ink); font: 500 15px "Inter", sans-serif; margin-bottom: 10px; }
+    .pay-find + .miss { margin: 0 0 12px; }
+    .pay-row[hidden], .pay-group[hidden] { display: none; }
+    .vive-links { margin-top: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 760px) { .vive-links { grid-template-columns: 1fr; } }
+    .vl-card { padding: 20px; border-radius: 20px; border: 1px solid var(--line); color: var(--ink); }
+    .vl-ig { background: radial-gradient(380px 200px at 100% 0%, rgba(225,48,108,.35), transparent 70%), radial-gradient(300px 180px at 0% 100%, rgba(253,186,64,.18), transparent 70%), var(--card); }
+    .vl-web { background: radial-gradient(380px 200px at 100% 0%, rgba(255,26,26,.28), transparent 70%), var(--card); }
+    .vl-ico { font-size: 30px; }
+    .vl-card h3 { margin: 6px 0 4px; font: 800 19px "Montserrat", sans-serif; }
+    .vl-card p { margin: 0 0 14px; color: var(--muted); font-size: 14px; }
+    .vl-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .vl-btn { display: flex; flex-direction: column; gap: 2px; padding: 12px; border-radius: 14px; text-decoration: none; color: #fff; background: var(--red); box-shadow: 0 6px 18px rgba(255,26,26,.3); }
+    .vl-ig .vl-btn { background: linear-gradient(135deg,#833ab4,#e1306c 55%,#fcaf45); box-shadow: 0 6px 18px rgba(225,48,108,.3); }
+    .vl-btn b { font: 800 14px "Montserrat", sans-serif; }
+    .vl-btn span { font-size: 12.5px; opacity: .9; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    /* ===== Próximas promos cuando hoy no hay ===== */
+    .next-box { text-align: left; color: var(--ink); }
+    .next-box p { margin: 0 0 10px; }
+    .next-list { display: grid; gap: 8px; }
+    .next-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; background: var(--card2); border: 1px solid var(--line); }
+    .next-item .nx-day { font: 800 13px "Montserrat", sans-serif; color: var(--red); min-width: 64px; max-width: 74px; line-height: 1.2; text-transform: capitalize; }
+    .next-item .nx-name { flex: 1; min-width: 0; }
+    .next-item .nx-name b { color: var(--ink); }
+    .next-item .nx-off { color: var(--ink); }
+    .next-item .nx-name small { display: block; color: var(--muted); font-size: 12.5px; }
+    .next-item .nx-off { font: 900 18px "Montserrat", sans-serif; }
   </style>
 </head>
 <body>
@@ -477,45 +553,46 @@
   <main>
     <section class="finder wrap" aria-label="Buscador de promos">
       <div class="q">
-        <div class="q-title"><span class="q-num">1</span><h2>¿En qué zona estás?</h2></div>
+        <div class="q-title"><span class="q-num">1</span><h2>¿Qué promo tenés hoy?</h2></div>
+        <div class="top-lbl">⭐ Los más usados · tocá el tuyo</div>
+        <div class="top-pay" id="topPay"></div>
+        <button class="all-today" type="button" id="allToday"></button>
+        <div class="top-lbl" style="margin-top:14px">¿No está tu banco o billetera? Buscalo en la lista completa:</div>
+        <button class="pay-dd" id="payBtn" type="button" aria-expanded="false" aria-controls="payPanel"><span id="payBtnTxt">💳 Todos los medios de pago</span><span class="caret" aria-hidden="true">▾</span></button>
+        
+        <div class="pay-panel" id="payPanel">
+          <input type="search" class="pay-find" id="payFind" placeholder="🔎 Buscá tu banco o billetera" aria-label="Buscar banco o billetera" />
+          <div class="miss" id="payMiss" hidden><span>No tenemos promos de <b id="payMissQ"></b> todavía. ¿Conocés alguna?</span><button class="btn small" type="button" id="payMissBtn">+ Avisanos</button></div>
+          <label class="pay-row pay-all"><input type="checkbox" id="payAllChk" /><span>💳 Todos los medios de pago</span></label>
+          <div id="payGroups"></div>
+          <div class="pay-actions"><button class="btn small" type="button" id="payDone">Listo, ver promos</button></div>
+        </div>
+      </div>
+      <div class="q">
+        <div class="q-title"><span class="q-num">2</span><h2>¿En qué zona estás?</h2></div>
         <div class="seg" id="zoneSeg"></div>
       </div>
 
       <div class="q">
-        <div class="q-title"><span class="q-num">2</span><h2>¿Dónde vas a comprar?</h2></div>
+        <div class="q-title"><span class="q-num">3</span><h2>Rubros</h2></div>
         <div class="tiles" id="placeTiles"></div>
         <div class="stores" id="storeRow" aria-label="Comercios"></div>
         <div class="search-row">
           <input type="search" id="searchInput" placeholder="Buscá un comercio: Coto, Farmacity, YPF…" aria-label="Buscar comercio" />
         </div>
+        <div class="miss" id="storeMiss" hidden><span>No encontramos <b id="storeMissQ"></b> 😕 ¿Es tu local o conocés uno con promo?</span><button class="btn small" type="button" id="storeMissBtn">+ Agregar este local</button></div>
       </div>
 
-      <div class="q">
-        <div class="q-title"><span class="q-num">3</span><h2>¿Con qué pagás?</h2></div>
-        <div class="pay-select"><select id="paySelect" aria-label="Medio de pago"></select></div>
-        <button class="pay-multi" type="button" id="payMulti">Elegir varios medios de pago a la vez</button>
-        <button class="pay-toggle" id="payToggle" type="button" aria-expanded="false" aria-controls="payPanel">
-          <div><b>Mis medios de pago</b><br><span id="paySummary">Todos los bancos, billeteras y clubes</span></div>
-          <span aria-hidden="true">▾</span>
-        </button>
-        <div class="pay-panel" id="payPanel">
-          <div id="payGroups"></div>
-          <div class="pay-actions">
-            <button class="btn ghost small" type="button" id="payAll">Marcar todos</button>
-            <button class="btn ghost small" type="button" id="payNone">Desmarcar todos</button>
-            <button class="btn small" type="button" id="payDone">Listo</button>
-          </div>
-        </div>
-      </div>
     </section>
 
     <section class="wrap" aria-label="Suscripción Pro">
       <div class="pro-banner">
         <div>
-          <h2>¿Querés más descuentos, personalizados?</h2>
-          <p>Te mandamos por WhatsApp las promos de <b>tus</b> bancos, billeteras y lugares, todos los días.</p>
+          <span class="pro-badge">⭐ VIVE PRO</span>
+          <h2>Ser Pro y obtener más descuentos</h2>
+          <p>Recibí todos los días por WhatsApp las mejores promos de <b>tus</b> bancos, billeteras y lugares favoritos. Sin buscar, sin perderte ninguna.</p>
         </div>
-        <div class="pro-btns"><button class="btn pro" type="button" id="proOpen">Acceder a más descuentos</button><button class="btn pro-ghost" type="button" id="proMine">Ya soy Pro</button></div>
+        <div class="pro-btns"><button class="btn pro" type="button" id="proOpen">🚀 Quiero ser Pro</button><button class="btn pro-ghost" type="button" id="proMine">Ya soy Pro</button></div>
       </div>
     </section>
 
@@ -539,8 +616,30 @@
 
   <section class="suggest wrap" aria-label="Sumar un comercio o promo">
     <div class="suggest-box">
-      <div><h3>¿Falta un comercio o tenés una promo?</h3><p>Contanos qué local o beneficio no está. Si tenés un comercio, cargá tu promo: la revisamos y la sumamos.</p></div>
+      <div><h3>¿Falta un comercio o tenés una promo?</h3><p>Contanos qué local o beneficio no está. ¿Tenés un comercio? Cargá tu promo: la revisamos, la sumamos y <b>además podés ser promocionado en una nota en <a href="https://vive.click" target="_blank" rel="noopener">vive.click</a> o <a href="https://vivelaplata.com.ar" target="_blank" rel="noopener">vivelaplata.com.ar</a></b>.</p></div>
+      <button class="sg-plus" type="button" id="sgPlus" aria-label="Sumar un comercio o promo">+</button>
       <button class="btn" type="button" id="sgOpen">Sumar un comercio o promo</button>
+    </div>
+  </section>
+
+  <section class="wrap vive-links" aria-label="VIVE en redes y en la web">
+    <div class="vl-card vl-ig">
+      <div class="vl-ico">📸</div>
+      <h3>Seguinos en Instagram</h3>
+      <p>Promos, agenda y lo que pasa en la ciudad, todos los días.</p>
+      <div class="vl-btns">
+        <a class="vl-btn" href="https://www.instagram.com/caba_vive/" target="_blank" rel="noopener"><b>VIVE CABA</b><span>@caba_vive</span></a>
+        <a class="vl-btn" href="https://www.instagram.com/vive.laplata/" target="_blank" rel="noopener"><b>VIVE La Plata</b><span>@vive.laplata</span></a>
+      </div>
+    </div>
+    <div class="vl-card vl-web">
+      <div class="vl-ico">📰</div>
+      <h3>Entrá a nuestras webs</h3>
+      <p>Noticias, salidas y descuentos de tu ciudad.</p>
+      <div class="vl-btns">
+        <a class="vl-btn" href="https://vive.click/caba" target="_blank" rel="noopener"><b>VIVE CABA</b><span>vive.click/caba</span></a>
+        <a class="vl-btn" href="https://vivelaplata.com.ar" target="_blank" rel="noopener"><b>VIVE La Plata</b><span>vivelaplata.com.ar</span></a>
+      </div>
     </div>
   </section>
 
@@ -689,6 +788,7 @@
           <button class="sg-tab on" type="button" data-sg="cliente">🙋 Soy cliente</button>
           <button class="sg-tab" type="button" data-sg="comercio">🏪 Tengo un comercio</button>
         </div>
+        <div class="sg-press" id="sgPress" hidden>📰 <b>Sumá tu promo y ganá difusión:</b> además de aparecer en Ofertas del día, tu comercio puede ser promocionado en una nota en <b>vive.click</b> o <b>vivelaplata.com.ar</b>.</div>
         <form class="sg-form" id="sgForm">
           <div><label class="lbl" for="sgStore" id="sgStoreLbl">¿Qué comercio o local falta?</label><input id="sgStore" type="text" maxlength="80" required placeholder="Ej: Almacén Don José, Farmacia del Centro" /></div>
           <div class="sg-two">
@@ -708,7 +808,7 @@
       <div id="sgDone" class="sg-ok" hidden>
         <div class="big">🙌</div>
         <h3>¡Gracias!</h3>
-        <p class="sub">Lo revisamos en los próximos días y, si está todo ok, lo sumamos a Ofertas del día.</p>
+        <p class="sub" id="sgDoneTxt">Lo revisamos en los próximos días y, si está todo ok, lo sumamos a Ofertas del día.</p>
         <button class="btn" type="button" data-close="sgOverlay" style="width:100%;margin-top:10px">Listo</button>
       </div>
     </div>
@@ -812,13 +912,15 @@
 
     // Lugares (pregunta 2)
     const PLACES = [
-      { id: "todo", name: "Todo", hint: "Todas las promos", icon: "grid" },
       { id: "super", name: "Supermercados", hint: "Súper y mayoristas", icon: "cart" },
       { id: "barrio", name: "Locales de barrio", hint: "Almacén, carnicería…", icon: "shop" },
       { id: "farmacia", name: "Farmacias", hint: "Y perfumerías", icon: "pill" },
       { id: "combustible", name: "Combustible", hint: "Estaciones y apps", icon: "fuel" },
       { id: "gastro", name: "Gastronomía", hint: "Cafés y restós", icon: "cup" },
-      { id: "mas", name: "Más rubros", hint: "Ropa, transporte…", icon: "bag" }
+      { id: "viajes", name: "Viajes", hint: "Vuelos, micros y hoteles", icon: "plane" },
+      { id: "ropa", name: "Ropa y calzado", hint: "Indumentaria y deportes", icon: "shirt" },
+      { id: "electro", name: "Electro y tecno", hint: "Electrodomésticos", icon: "tv" },
+      { id: "mas", name: "Otros", hint: "Ropa, transporte…", icon: "bag" }
     ];
     const GENERIC_FIRST = ["supermercados", "comercios", "estaciones", "restaurantes", "gastronomia", "farmacias", "colectivos", "subte", "shoppings", "tienda"];
     const WALLET_WORDS = ["mercado pago", "modo", "uala", "naranja x", "personal pay", "prex", "lemon", "belo", "claro pay", "cocos", "astropay", "moni", "credicuotas", "cuenta dni", "billetera", "shell box", "app ypf", "axion"];
@@ -888,6 +990,9 @@
       if (r === "farmacia") return "farmacia";
       if (r === "combustible") return "combustible";
       if (r === "gastronomia") return "gastro";
+      if (r === "indumentaria" || /calzado|deporte/.test(r) || /^(nike|adidas|grimoldi|dexter|open sports|moov|sporting|stock center)/.test(c)) return "ropa";
+      if (/electro|tecno/.test(r) || /fravega|megatone|cetrogar|casa del audio|musimundo|garbarino|naldo|on city|coppel/.test(c)) return "electro";
+      if (/viaje|turismo/.test(r) || /aerolinea|booking|almundo|despegar|plataforma 10|hotel|vuelo|assist card|atrapalo|flybondi|jetsmart|duty free|pasaje/.test(c)) return "viajes";
       if (r === "otros" && /barrio|adherid|almacen|carniceria|verduleria|comercio/.test(c)) return "barrio";
       return "mas";
     }
@@ -958,6 +1063,9 @@
       pill: SV('<rect x="2.5" y="8.5" width="19" height="7" rx="3.5" transform="rotate(-45 12 12)"/><path d="M8.5 8.5l7 7"/>'),
       fuel: SV('<path d="M4 21V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16"/><path d="M3 21h12"/><path d="M6 9h6"/><path d="M14 8h2a2 2 0 0 1 2 2v6a1.5 1.5 0 0 0 3 0V8l-3-3"/>'),
       cup: SV('<path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M8 3v3M12 3v3"/>'),
+      plane: SV('<path d="M10.5 3.5c.6-.6 1.9-.6 2.5 0l.5.5-1.5 6 5.5 3.5.5 2-6-1.5-2 4 1 2-1 .5-2.5-3-3-2.5.5-1 2 1 4-2L9 7.5z"/>'),
+      shirt: SV('<path d="M8 3l-5 3 2 5 3-1v11h8V10l3 1 2-5-5-3a4 4 0 0 1-8 0z"/>'),
+      tv: SV('<rect x="2.5" y="5" width="19" height="13" rx="2"/><path d="M8 21h8M12 18v3"/>'),
       bag: SV('<path d="M5 8h14l-1 13H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>'),
       qr: SV('<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M20 20h-3v-3M14 20h.01"/>'),
       nfc: SV('<rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10 18h4"/><path d="M9.5 9.5a4 4 0 0 1 5 0M8 7.5a6.5 6.5 0 0 1 8 0"/>'),
@@ -1064,7 +1172,7 @@
     }
     let state = { ...loadPrefs(), date: todayISO(), brand: "", q: "" };
     function saveState() {
-      try { const { date, brand, q, ...prefs } = state; localStorage.setItem(STORAGE_KEY, JSON.stringify(prefs)); } catch { /* sin almacenamiento */ }
+      try { const { date, brand, q, showRes, ...prefs } = state; localStorage.setItem(STORAGE_KEY, JSON.stringify(prefs)); } catch { /* sin almacenamiento */ }
     }
 
     // ===== Tema claro / oscuro =====
@@ -1196,9 +1304,10 @@
     function renderPlaces() {
       const base = baseList();
       $("placeTiles").innerHTML = PLACES.map((pl) => {
-        const n = pl.id === "todo" ? base.length : base.filter((p) => p.place === pl.id).length;
-        return `<button type="button" class="tile${state.place === pl.id ? " on" : ""}" data-place="${pl.id}" aria-pressed="${state.place === pl.id}">
-          ${ICONS[pl.icon]}<b>${pl.name}</b><small>${n} promo${n === 1 ? "" : "s"}</small></button>`;
+        const n = base.filter((p) => p.place === pl.id).length;
+        const add = `<small>${n} promo${n === 1 ? "" : "s"}</small>`;
+        return `<button type="button" class="tile t-${pl.id}${state.place === pl.id ? " on" : ""}" data-place="${pl.id}" aria-pressed="${state.place === pl.id}">
+          ${ICONS[pl.icon]}<b>${pl.name}</b>${add}</button>`;
       }).join("");
     }
     function renderStores() {
@@ -1214,17 +1323,17 @@
       const groups = {};
       ALL_WALLETS.forEach((w) => { const g = walletGroup(w); (groups[g] = groups[g] || []).push(w); });
       const order = ["Bancos y tarjetas", "Billeteras y apps", "Clubes"];
-      $("payGroups").innerHTML = order.filter((g) => groups[g]).map((g) => `
-        <div class="pay-group"><h3>${g}</h3><div class="chips">
-          ${groups[g].map((w) => `<button type="button" class="chip${state.wallets.includes(w) ? " on" : ""}" data-wallet="${esc(w)}" aria-pressed="${state.wallets.includes(w)}">${bankLogo(w, true)}${esc(w)}</button>`).join("")}
-        </div></div>`).join("");
       const n = state.wallets.length;
       const isAll = n === 0 || n === ALL_WALLETS.length;
-      $("paySelect").innerHTML = `<option value="__ALL__">💳 Todos los medios de pago</option>` +
-        (!isAll && n > 1 ? `<option value="__MULTI__">✔ ${n} medios elegidos (${esc(state.wallets.slice(0, 2).join(", "))}${n > 2 ? "…" : ""})</option>` : "") +
-        order.filter((g) => groups[g]).map((g) => `<optgroup label="${g}">${groups[g].map((w) => `<option value="${esc(w)}">${esc(w)}</option>`).join("")}</optgroup>`).join("");
-      $("paySelect").value = isAll ? "__ALL__" : n === 1 ? state.wallets[0] : "__MULTI__";
-      $("paySummary").textContent = n === 0 || n === ALL_WALLETS.length ? "Todos los bancos, billeteras y clubes" : `${n} seleccionado${n === 1 ? "" : "s"}: ${state.wallets.slice(0, 3).join(", ")}${n > 3 ? "…" : ""}`;
+      const on = (w) => !isAll && state.wallets.includes(w);
+      $("payGroups").innerHTML = order.filter((g) => groups[g]).map((g) => `
+        <div class="pay-group"><h3>${g}</h3><div class="pay-list">
+          ${groups[g].map((w) => `<label class="pay-row${on(w) ? " on" : ""}"><input type="checkbox" data-wallet="${esc(w)}"${on(w) ? " checked" : ""} />${bankLogo(w, true)}<span>${esc(w)}</span></label>`).join("")}
+        </div></div>`).join("");
+      if ($("payFind").value) setTimeout(filterPay);
+      $("payAllChk").checked = isAll;
+      $("payAllChk").closest(".pay-row").classList.toggle("on", isAll);
+      $("payBtnTxt").textContent = isAll ? "💳 Todos los medios de pago" : n === 1 ? "💳 " + state.wallets[0] : `✔ ${n} elegidos: ${state.wallets.join(", ")}`;
     }
 
     function renderResults() {
@@ -1238,8 +1347,66 @@
       $("favCount").textContent = `${favs.length} promo${favs.length === 1 ? "" : "s"}`;
       $("otherCount").textContent = `${others.length} promo${others.length === 1 ? "" : "s"}`;
       $("favCards").innerHTML = favs.length ? favs.map(favCard).join("") : `<div class="empty">Tocá ☆ en cualquier promo para tenerla siempre a mano acá, con la calculadora de ahorro.</div>`;
-      $("otherCards").innerHTML = others.length ? others.map(smallCard).join("") : `<div class="empty">No hay promos con estos filtros. Probá otra zona, otro rubro o sumá más medios de pago.</div>`;
+      $("otherCards").innerHTML = others.length ? others.map(smallCard).join("") : (list.length ? `<div class="empty">Todas las promos de hoy ya están en tus favoritos ☝️</div>` : emptyWithNext());
     }
+    // Si hoy no hay nada, mostramos las próximas promos (7 días) con los mismos filtros
+    function nextPromos() {
+      const q = norm(state.q);
+      const out = []; const seen = new Set();
+      const [y, m, d] = state.date.split("-").map(Number);
+      for (let i = 1; i <= 7 && out.length < 6; i++) {
+        const iso = toISO(new Date(y, m - 1, d + i));
+        PROMOS.filter((p) => validOn(p, iso) && inZone(p, state.zone) && (state.wallets.length === 0 || state.wallets.includes(p.medioPago)) &&
+          (state.place === "todo" || p.place === state.place) && (!state.brand || p.brand === state.brand) &&
+          (!q || norm(p.comercio + " " + p.medioPago).includes(q)))
+          .sort((a, b) => b.off - a.off)
+          .forEach((p) => { const k = p.comercio + "|" + p.medioPago; if (out.length < 6 && !seen.has(k)) { seen.add(k); out.push({ p, iso }); } });
+      }
+      return out;
+    }
+    function emptyWithNext() {
+      const nx = nextPromos();
+      const n = state.wallets.length;
+      const isAll = n === 0 || n === ALL_WALLETS.length;
+      const quien = isAll ? "estos filtros" : n === 1 ? state.wallets[0] : "los medios que elegiste";
+      const dia = state.date === todayISO() ? "Hoy" : `El ${dayName(state.date).toLowerCase()}`;
+      if (!nx.length) return `<div class="empty">No hay promos con ${esc(quien)} en los próximos días. Probá otra zona, otro rubro o sumá más medios de pago.</div>`;
+      return `<div class="empty next-box"><p><b>${dia} no hay promos con ${esc(quien)} 😕</b> Las próximas son:</p><div class="next-list">
+        ${nx.map(({ p, iso }) => `<div class="next-item"><span class="nx-day">${iso === toISO(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1)) ? "Mañana" : dayName(iso).toLowerCase() + " " + shortDate(iso)}</span>
+          ${storeLogo(p, true)}<span class="nx-name"><b>${esc(p.comercio)}</b><small>${esc(p.medioPago)}${p.tope ? " · tope " + money(p.tope) : ""}</small></span>
+          <span class="nx-off">${esc(p.off)}%</span><button class="btn small" type="button" data-goto="${iso}">Ver</button></div>`).join("")}
+      </div></div>`;
+    }
+    document.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-goto]"); if (!b) return;
+      state.date = b.dataset.goto;
+      const sel = $("dateSelect");
+      if (![...sel.options].some((o) => o.value === state.date)) fillDateSelect(sel, state.date); else sel.value = state.date;
+      renderAll();
+      $("results").scrollIntoView({ block: "start" });
+    });
+    const TOP_PAY = [["Mercado Pago", ["Mercado Pago"]], ["Cuenta DNI", ["Cuenta DNI"]], ["Banco Nación", ["Banco Nación / BNA+"]], ["Galicia", ["Galicia", "MODO Galicia"]], ["Santander", ["Santander", "Banco Santander"]], ["BBVA", ["BBVA"]], ["Macro", ["Macro", "Banco Macro"]], ["Naranja X", ["Naranja X"]], ["Ualá", ["Ualá"]], ["MODO", ["MODO"]]];
+    function topPayList() {
+      return TOP_PAY.map(([label, al]) => [label, al.filter((w) => ALL_WALLETS.includes(w))]).filter(([, al]) => al.length).slice(0, 10);
+    }
+    function renderTopPay() {
+      const n = state.wallets.length, isAll = n === 0 || n === ALL_WALLETS.length;
+      const today = PROMOS.filter((p) => validOn(p, state.date) && inZone(p, state.zone));
+      $("topPay").innerHTML = topPayList().map(([label, al], i) => {
+        const c = today.filter((p) => al.includes(p.medioPago)).length;
+        const on = !isAll && n === al.length && al.every((w) => state.wallets.includes(w));
+        return `<button type="button" class="tp${on ? " on" : ""}${c ? "" : " zero"}" data-top="${i}">${bankLogo(al[0])}<b>${esc(label)}</b><small>${c ? c + " promo" + (c === 1 ? "" : "s") : "Hoy no hay"}</small></button>`;
+      }).join("");
+      $("allToday").textContent = `O ver todas las promos ${state.date === todayISO() ? "de hoy" : "del día"} (${today.length}) →`;
+      $("results").hidden = isAll && !state.showRes;
+    }
+    $("topPay").addEventListener("click", (e) => {
+      const b = e.target.closest("[data-top]"); if (!b) return;
+      state.wallets = [...topPayList()[+b.dataset.top][1]]; state.showRes = true;
+      saveState(); renderAll(); $("results").scrollIntoView({ block: "start", behavior: "smooth" });
+    });
+    $("sgPlus").addEventListener("click", () => $("sgOpen").click());
+    $("allToday").addEventListener("click", () => { state.wallets = [...ALL_WALLETS]; state.showRes = true; saveState(); renderAll(); $("results").scrollIntoView({ block: "start", behavior: "smooth" }); });
     function renderEvent() {
       const list = baseList().filter((p) => p.evento && p.off >= 25).sort((a, b) => potential(b) - potential(a) || b.off - a.off);
       if (!list.length) { $("eventBox").hidden = true; $("eventBox").innerHTML = ""; return; }
@@ -1256,7 +1423,7 @@
           <div class="grid">${list.map(smallCard).join("")}</div>
         </div>`;
     }
-    function renderAll() { renderStats(); renderBest(); renderEvent(); renderZones(); renderPlaces(); renderStores(); renderPay(); renderResults(); }
+    function renderAll() { renderTopPay(); renderStats(); renderBest(); renderEvent(); renderZones(); renderPlaces(); renderStores(); renderPay(); renderResults(); }
 
     function fillDateSelect(sel, value) {
       const start = new Date();
@@ -1283,7 +1450,7 @@
     });
     $("placeTiles").addEventListener("click", (e) => {
       const b = e.target.closest("[data-place]"); if (!b) return;
-      state.place = b.dataset.place; state.brand = ""; saveState();
+      state.place = state.place === b.dataset.place ? "todo" : b.dataset.place; state.brand = ""; saveState();
       renderPlaces(); renderStores(); renderResults();
     });
     $("storeRow").addEventListener("click", (e) => {
@@ -1291,30 +1458,47 @@
       state.brand = b.dataset.brand; renderStores(); renderResults();
       $("results").scrollIntoView({ block: "start" });
     });
-    $("searchInput").addEventListener("input", (e) => { state.q = e.target.value; renderResults(); });
-    $("paySelect").addEventListener("change", (e) => {
-      const v = e.target.value;
-      if (v === "__MULTI__") return;
-      state.wallets = v === "__ALL__" ? [...ALL_WALLETS] : [v];
-      saveState(); renderAll();
-    });
-    $("payMulti").addEventListener("click", () => {
+    function checkStoreMiss() {
+      const q = norm(state.q);
+      const miss = q.length >= 3 && !PROMOS.some((p) => norm(p.comercio + " " + p.medioPago).includes(q));
+      $("storeMiss").hidden = !miss;
+      if (miss) $("storeMissQ").textContent = "“" + state.q.trim() + "”";
+    }
+    $("searchInput").addEventListener("input", (e) => { state.q = e.target.value; if (state.q.trim()) state.showRes = true; renderAll(); checkStoreMiss(); });
+    $("storeMissBtn").addEventListener("click", () => { $("sgOpen").click(); $("sgStore").value = state.q.trim(); });
+    $("payBtn").addEventListener("click", () => {
       const open = $("payPanel").classList.toggle("open");
-      $("payMulti").textContent = open ? "Cerrar la lista de varios" : "Elegir varios medios de pago a la vez";
+      $("payBtn").setAttribute("aria-expanded", open);
     });
-    $("payToggle").addEventListener("click", () => {
-      const open = $("payPanel").classList.toggle("open");
-      $("payToggle").setAttribute("aria-expanded", open);
-    });
-    $("payDone").addEventListener("click", () => { $("payPanel").classList.remove("open"); $("payToggle").setAttribute("aria-expanded", false); $("payMulti").textContent = "Elegir varios medios de pago a la vez"; $("results").scrollIntoView({ block: "start" }); });
-    $("payGroups").addEventListener("click", (e) => {
+    $("payDone").addEventListener("click", () => { $("payPanel").classList.remove("open"); $("payBtn").setAttribute("aria-expanded", false); $("results").scrollIntoView({ block: "start" }); });
+    $("payGroups").addEventListener("change", (e) => {
       const b = e.target.closest("[data-wallet]"); if (!b) return;
       const w = b.dataset.wallet;
-      state.wallets = state.wallets.includes(w) ? state.wallets.filter((x) => x !== w) : [...state.wallets, w];
+      const isAll = state.wallets.length === 0 || state.wallets.length === ALL_WALLETS.length;
+      let next = isAll ? [] : [...state.wallets];
+      next = b.checked ? [...next.filter((x) => x !== w), w] : next.filter((x) => x !== w);
+      state.wallets = next.length ? next : [...ALL_WALLETS]; state.showRes = true;
       saveState(); renderAll();
     });
-    $("payAll").addEventListener("click", () => { state.wallets = [...ALL_WALLETS]; saveState(); renderAll(); });
-    $("payNone").addEventListener("click", () => { state.wallets = []; saveState(); renderAll(); });
+    function filterPay() {
+      const q = norm($("payFind").value);
+      let shown = 0;
+      document.querySelectorAll("#payGroups .pay-group").forEach((g) => {
+        let n = 0;
+        g.querySelectorAll(".pay-row").forEach((r) => { const ok = !q || norm(r.textContent).includes(q); r.hidden = !ok; if (ok) n++; });
+        g.hidden = !n; shown += n;
+      });
+      $("payMiss").hidden = !(q.length >= 2 && !shown);
+      $("payMissQ").textContent = $("payFind").value.trim();
+    }
+    $("payFind").addEventListener("input", filterPay);
+    $("payMissBtn").addEventListener("click", () => {
+      const q = $("payFind").value.trim();
+      $("sgOpen").click();
+      $("sgStore").value = "Banco o billetera: " + q;
+      $("sgPromo").value = "Falta " + q + " en la lista. Promo que conozco: ";
+    });
+    $("payAllChk").addEventListener("change", () => { state.wallets = [...ALL_WALLETS]; state.showRes = true; saveState(); renderAll(); });
     document.addEventListener("click", (e) => {
       const s = e.target.closest("[data-fav]"); if (!s) return;
       const k = s.dataset.fav;
@@ -2243,6 +2427,8 @@
       $("sgPromo").required = owner;
       $("sgContactLbl").textContent = owner ? "WhatsApp o mail (para verificar)" : "WhatsApp o mail (opcional)";
       $("sgContact").required = owner;
+      $("sgPress").hidden = !owner;
+      $("sgDoneTxt").textContent = owner ? "Te escribimos para verificar tu promo y contarte cómo podés aparecer en una nota de vive.click o vivelaplata.com.ar." : "Lo revisamos en los próximos días y, si está todo ok, lo sumamos a Ofertas del día.";
       $("sgContact").placeholder = owner ? "Te escribimos para confirmar la promo" : "Para avisarte cuando esté";
     }
     document.querySelectorAll("[data-sg]").forEach((b) => b.addEventListener("click", () => { sgType = b.dataset.sg; paintSg(); }));
