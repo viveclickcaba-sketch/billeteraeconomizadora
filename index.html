@@ -402,6 +402,31 @@
     .star-note { margin: 10px 12px 4px; padding: 10px 12px; border-radius: 12px; background: var(--card2); border: 1px solid var(--line); font-size: 13.5px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
     .star-note b { color: #f59e0b; }
     .star-note .btn { margin-left: auto; }
+    /* ===== Sección de evento (Black Friday, Hot Sale, etc.) ===== */
+    .event { margin-top: 18px; }
+    .event-box { position: relative; overflow: hidden; border-radius: 24px; padding: 22px 20px 20px; background: radial-gradient(600px 260px at 100% 0%, rgba(255,0,0,.38), transparent 65%), #050505; border: 1px solid rgba(255,40,40,.45); color: #fff; }
+    .event-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+    .event-tag { display: inline-block; background: #ff1a1a; color: #fff; font: 800 12px "Montserrat", sans-serif; letter-spacing: .12em; padding: 5px 10px; border-radius: 6px; margin-bottom: 8px; }
+    .event-head h2 { font: 900 clamp(26px, 5vw, 40px)/1 "Montserrat", sans-serif; margin: 0; letter-spacing: -.01em; text-transform: uppercase; }
+    .event-head p { margin: 6px 0 0; color: #c9c9d1; font-size: 14px; }
+    .event-count { font: 800 14px "Montserrat", sans-serif; background: rgba(255,255,255,.1); border-radius: 999px; padding: 8px 14px; }
+    .event .grid { margin-top: 4px; }
+    .ev-mark { display: inline-block; background: #ff1a1a; color: #fff; font: 800 10px "Montserrat", sans-serif; letter-spacing: .08em; padding: 2px 6px; border-radius: 5px; margin-left: 6px; vertical-align: 2px; }
+    /* ===== Sumar un comercio o promo ===== */
+    .suggest { margin-top: 26px; }
+    .suggest-box { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; justify-content: space-between; padding: 20px; border-radius: 20px; background: var(--card); border: 1px dashed var(--line); }
+    .suggest-box h3 { margin: 0 0 4px; font: 800 18px "Montserrat", sans-serif; }
+    .suggest-box p { margin: 0; color: var(--muted); font-size: 14px; }
+    .sg-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 14px 0 16px; }
+    .sg-tab { padding: 12px 8px; border-radius: 12px; border: 1px solid var(--line); background: var(--card2); color: var(--muted); font: 700 14px "Montserrat", sans-serif; cursor: pointer; }
+    .sg-tab.on { background: var(--red-soft); color: var(--red); border-color: rgba(255,26,26,.4); }
+    .sg-form { display: grid; gap: 12px; }
+    .sg-form input, .sg-form textarea, .sg-form select { width: 100%; }
+    .sg-form textarea { min-height: 84px; resize: vertical; font: inherit; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--card2); color: var(--ink); }
+    .sg-two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .sg-ok { text-align: center; padding: 24px 6px 8px; }
+    .sg-ok .big { font-size: 44px; }
+    @media (max-width: 520px) { .sg-two { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -480,6 +505,8 @@
       </div>
     </section>
 
+    <section class="event wrap" id="eventBox" hidden aria-label="Evento especial"></section>
+
     <section class="results wrap" id="results" aria-label="Promos">
       <div class="res-head"><h2 id="resTitle">Promos de hoy</h2><span id="resSub"></span></div>
       <p class="notice" id="statusNote">Cargando promos…</p>
@@ -495,6 +522,13 @@
       </div>
     </section>
   </main>
+
+  <section class="suggest wrap" aria-label="Sumar un comercio o promo">
+    <div class="suggest-box">
+      <div><h3>¿Falta un comercio o tenés una promo?</h3><p>Contanos qué local o beneficio no está. Si tenés un comercio, cargá tu promo: la revisamos y la sumamos.</p></div>
+      <button class="btn" type="button" id="sgOpen">Sumar un comercio o promo</button>
+    </div>
+  </section>
 
   <footer class="foot">
     <div class="wrap foot-in">
@@ -629,6 +663,43 @@
     </div>
   </div>
 
+  <!-- Sumar un comercio o promo -->
+  <div class="overlay" id="sgOverlay">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="sgTitle" style="max-width:480px">
+      <div class="mhead">
+        <div><h3 id="sgTitle">Sumar un comercio o promo</h3><p class="sub" style="margin:0">Lo revisamos y, si está todo ok, lo publicamos.</p></div>
+        <button class="x" type="button" data-close="sgOverlay" aria-label="Cerrar">✕</button>
+      </div>
+      <div id="sgBody">
+        <div class="sg-tabs" role="tablist">
+          <button class="sg-tab on" type="button" data-sg="cliente">🙋 Soy cliente</button>
+          <button class="sg-tab" type="button" data-sg="comercio">🏪 Tengo un comercio</button>
+        </div>
+        <form class="sg-form" id="sgForm">
+          <div><label class="lbl" for="sgStore" id="sgStoreLbl">¿Qué comercio o local falta?</label><input id="sgStore" type="text" maxlength="80" required placeholder="Ej: Almacén Don José, Farmacia del Centro" /></div>
+          <div class="sg-two">
+            <div><label class="lbl" for="sgZone">Zona</label><select id="sgZone"><option>CABA</option><option>GBA Norte / San Martín</option><option>La Plata</option><option>Otra</option></select></div>
+            <div><label class="lbl" for="sgAddr">Dirección o barrio (opcional)</label><input id="sgAddr" type="text" maxlength="80" placeholder="Ej: Palermo, Av. Santa Fe 3200" /></div>
+          </div>
+          <div><label class="lbl" for="sgPromo" id="sgPromoLbl">¿Qué promo o descuento tiene? (opcional)</label><textarea id="sgPromo" maxlength="400" placeholder="Ej: 20% los miércoles pagando con Cuenta DNI, tope $5.000"></textarea></div>
+          <div class="sg-two">
+            <div><label class="lbl" for="sgName">Tu nombre (opcional)</label><input id="sgName" type="text" maxlength="40" /></div>
+            <div><label class="lbl" for="sgContact" id="sgContactLbl">WhatsApp o mail (opcional)</label><input id="sgContact" type="text" maxlength="80" placeholder="Para avisarte cuando esté" /></div>
+          </div>
+          <div class="pw-err" id="sgErr"></div>
+          <button class="btn" type="submit">Enviar</button>
+          <p class="mp-muted" style="margin:0;text-align:center">Solo usamos tus datos para verificar la promo.</p>
+        </form>
+      </div>
+      <div id="sgDone" class="sg-ok" hidden>
+        <div class="big">🙌</div>
+        <h3>¡Gracias!</h3>
+        <p class="sub">Lo revisamos en los próximos días y, si está todo ok, lo sumamos a Ofertas del día.</p>
+        <button class="btn" type="button" data-close="sgOverlay" style="width:100%;margin-top:10px">Listo</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Acceso a Placas VIVE -->
   <div class="overlay" id="pwOverlay">
     <div class="modal narrow" role="dialog" aria-modal="true" aria-labelledby="pwTitle">
@@ -684,6 +755,10 @@
       <label class="lbl" style="display:flex;align-items:center;gap:8px;font-weight:500;margin:-4px 0 12px;cursor:pointer">
         <input type="checkbox" id="genLink" checked style="width:18px;height:18px;accent-color:var(--red)" />
         Dejar espacio para pegar el enlace (solo historias)
+      </label>
+      <label class="lbl" style="display:flex;align-items:center;gap:8px;font-weight:500;margin:-4px 0 12px;cursor:pointer">
+        <input type="checkbox" id="genGroup" checked style="width:18px;height:18px;accent-color:var(--red)" />
+        Agrupar en una sola placa las promos del mismo beneficio (ej. ANSES en varios súper)
       </label>
       <div class="star-note" id="starNote"></div>
       <div class="pick-list" id="pickList"></div>
@@ -836,13 +911,14 @@
           fuente: get(r, "fuente"),
           actualizado: parseDate(get(r, "actualizado")),
           desde: parseDate(get(r, "desde")),
-          hasta: parseDate(get(r, "hasta"))
+          hasta: parseDate(get(r, "hasta")),
+          evento: get(r, "evento")
         };
         p.brand = brandOf(p.comercio);
         p.place = placeOf(p);
         p.pay = payMethod(p);
         return p;
-      });
+      }).filter((p) => p.off > 0); // las que son solo cuotas sin interés (0%) no se muestran
     }
 
     async function loadPromos() {
@@ -1121,7 +1197,23 @@
       $("favCards").innerHTML = favs.length ? favs.map(favCard).join("") : `<div class="empty">Tocá ☆ en cualquier promo para tenerla siempre a mano acá, con la calculadora de ahorro.</div>`;
       $("otherCards").innerHTML = others.length ? others.map(smallCard).join("") : `<div class="empty">No hay promos con estos filtros. Probá otra zona, otro rubro o sumá más medios de pago.</div>`;
     }
-    function renderAll() { renderStats(); renderBest(); renderZones(); renderPlaces(); renderStores(); renderPay(); renderResults(); }
+    function renderEvent() {
+      const list = baseList().filter((p) => p.evento).sort((a, b) => potential(b) - potential(a) || b.off - a.off);
+      if (!list.length) { $("eventBox").hidden = true; $("eventBox").innerHTML = ""; return; }
+      const name = list[0].evento;
+      const isToday = state.date === todayISO();
+      $("eventBox").hidden = false;
+      $("eventBox").innerHTML = `
+        <div class="event-box">
+          <div class="event-head">
+            <div><span class="event-tag">🔥 EVENTO ESPECIAL</span><h2>${esc(name)}</h2>
+              <p>Las promos de ${esc(name)} que valen ${isToday ? "hoy" : "el " + dayName(state.date).toLowerCase() + " " + shortDate(state.date)}. ¡Aprovechalas antes de que se terminen!</p></div>
+            <span class="event-count">${list.length} promo${list.length === 1 ? "" : "s"}</span>
+          </div>
+          <div class="grid">${list.map(smallCard).join("")}</div>
+        </div>`;
+    }
+    function renderAll() { renderStats(); renderBest(); renderEvent(); renderZones(); renderPlaces(); renderStores(); renderPay(); renderResults(); }
 
     function fillDateSelect(sel, value) {
       const start = new Date();
@@ -1188,7 +1280,7 @@
     });
 
     // ===== Placas VIVE (sección oculta) =====
-    const gen = { date: todayISO(), zone: "TODAS", format: "story", picked: new Set(), canvases: [], linkSpace: true, rubro: "TODOS" };
+    const gen = { date: todayISO(), zone: "TODAS", format: "story", picked: new Set(), canvases: [], linkSpace: true, rubro: "TODOS", group: true };
 
     function openOverlay(id) { $(id).classList.add("open"); document.body.style.overflow = "hidden"; }
     function closeOverlay(id) { $(id).classList.remove("open"); document.body.style.overflow = ""; }
@@ -1252,7 +1344,7 @@
         <label class="pick">
           <input type="checkbox" data-pick="${p.id}" ${gen.picked.has(p.id) ? "checked" : ""} />
           <span class="p">${esc(p.off)}%</span>
-          <span><span class="t">${esc(p.comercio)}</span><br><span class="s">${esc(p.medioPago)} · ${p.tope ? "Tope " + money(p.tope) : "Sin tope"}${p.hasta ? " · Hasta " + shortDate(p.hasta) : ""}</span></span>
+          <span><span class="t">${esc(p.comercio)}${p.evento ? `<span class="ev-mark">${esc(p.evento.toUpperCase())}</span>` : ""}</span><br><span class="s">${esc(p.medioPago)} · ${p.tope ? "Tope " + money(p.tope) : "Sin tope"}${p.hasta ? " · Hasta " + shortDate(p.hasta) : ""}</span></span>
           <button type="button" class="star-btn${PICKS[gen.date] === pickKey(p) ? " on" : ""}" data-star="${p.id}" title="Elegir como la mejor del día">⭐ ${PICKS[gen.date] === pickKey(p) ? "Elegida" : "Mejor del día"}</button>
         </label>`).join("")}`).join("");
       updateSelCount();
@@ -1288,6 +1380,7 @@
       renderPickList();
     });
     $("genLink").addEventListener("change", (e) => { gen.linkSpace = e.target.checked; });
+    $("genGroup").addEventListener("change", (e) => { gen.group = e.target.checked; });
     $("genRubro").addEventListener("change", (e) => { gen.rubro = e.target.value; renderPickList(); });
     $("clearPick").addEventListener("click", () => { gen.picked.clear(); renderPickList(); });
     $("genFormat").addEventListener("click", (e) => {
@@ -1478,6 +1571,102 @@
       return y;
     }
 
+    // Sello del evento (ej. BLACK FRIDAY) arriba de la placa
+    function eventBadge(ctx, W, format, name) {
+      if (!name) return;
+      const txt = "🔥 " + name.toUpperCase();
+      const size = format === "story" ? 40 : 34;
+      ctx.font = F(800, size);
+      const w = ctx.measureText(txt).width + size * 1.4, h = size * 1.8;
+      const x = (W - w) / 2, y = format === "story" ? 190 : 36;
+      roundRect(ctx, x, y, w, h, 12); ctx.fillStyle = "#ff1a1a"; ctx.fill();
+      ctx.fillStyle = "#ffffff"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.fillText(txt, W / 2, y + h / 2 + 2);
+      ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
+    }
+    const sharedEvent = (list) => (list.length && list.every((p) => p.evento && p.evento === list[0].evento)) ? list[0].evento : "";
+
+    // Agrupa promos del mismo beneficio: mismo medio de pago, mismo % y mismo tope
+    function groupByBenefit(list) {
+      const map = new Map();
+      list.forEach((p) => { const k = [p.medioPago, p.off, p.tope || 0].join("|"); if (!map.has(k)) map.set(k, []); map.get(k).push(p); });
+      return [...map.values()];
+    }
+
+    function drawGroup(list, format) {
+      const [W, H] = SIZES[format];
+      const c = document.createElement("canvas"); c.width = W; c.height = H;
+      const ctx = c.getContext("2d");
+      background(ctx, W, H);
+      drawLogo(ctx, W, H, format);
+      const ev = sharedEvent(list);
+      eventBadge(ctx, W, format, ev);
+      const p0 = list[0], M = 90, maxW = W - M * 2;
+      const story = format === "story";
+      const top = story ? (ev ? 300 : 260) : (ev ? 120 : 80);
+      const bottom = story ? (useLink(format) ? H - 360 : H - 220) : H - 200;
+      // Comercios: hasta 8 logos, en filas de 4
+      const shown = list.slice(0, 8), extra = list.length - shown.length;
+      const cols = Math.min(4, shown.length), ls = story ? 150 : 120, gapX = (maxW - cols * ls) / Math.max(1, cols - 1 || 1);
+      const rows = Math.ceil(shown.length / 4), cellH = ls + (story ? 60 : 50);
+      // Medir alto total para centrar
+      const headH = (story ? 40 : 34) + 30 + (story ? 220 : 180) + 30 + 60 + 40;
+      const listH = rows * cellH + (extra ? 50 : 0);
+      const footH = 70 + 60 + (p0.condiciones ? 90 : 0);
+      let y = top + Math.max(10, (bottom - top - (headH + listH + footH)) / 2);
+      // Fecha
+      ctx.fillStyle = "#ff3b3b"; ctx.font = F(800, story ? 40 : 34);
+      y += story ? 40 : 34; ctx.fillText(dateLine(gen.date), M, y); y += 30;
+      // Beneficio
+      const bl = story ? 76 : 64;
+      logoBox(ctx, LOGOS.bank.get(p0.medioPago), M, y, bl, p0.medioPago);
+      let t = fitText(ctx, (/^beneficio/i.test(p0.medioPago) ? p0.medioPago : `Beneficio ${p0.medioPago}`).toUpperCase(), 800, story ? 54 : 46, 30, maxW - bl - 20, 2);
+      ctx.fillStyle = "#ffffff";
+      const tTop = y + (bl - t.lines.length * t.size * 1.05) / 2;
+      ctx.textBaseline = "top"; t.lines.forEach((l, i) => { ctx.font = F(800, t.size); ctx.fillText(l, M + bl + 20, tTop + i * t.size * 1.05); }); ctx.textBaseline = "alphabetic";
+      y += bl + 10;
+      // %
+      const pct = `${p0.off}% OFF`;
+      let ps = story ? 220 : 180; ctx.font = F(800, ps);
+      while (ctx.measureText(pct).width > maxW && ps > 90) { ps -= 10; ctx.font = F(800, ps); }
+      y += ps * 0.82; ctx.fillStyle = "#ffffff"; ctx.fillText(pct, M - 6, y); y += 30;
+      ctx.fillStyle = "rgba(255,255,255,0.8)"; ctx.font = F(700, story ? 40 : 34);
+      y += 40; ctx.fillText(`en ${list.length} comercios:`, M, y); y += 30;
+      // Logos + nombres
+      shown.forEach((p, i) => {
+        const r = Math.floor(i / 4), cIdx = i % 4;
+        const rowCount = Math.min(4, shown.length - r * 4);
+        const rowW = rowCount * ls + (rowCount - 1) * (cols > 1 ? gapX : 0);
+        const x = M + (maxW - rowW) / 2 + cIdx * (ls + (cols > 1 ? gapX : 0));
+        const yy = y + r * cellH;
+        logoBox(ctx, LOGOS.store.get(p.id), x, yy, ls, p.comercio);
+        const nt = fitText(ctx, p.comercio.replace(/\s*\(.*\)\s*/g, " ").trim(), 700, story ? 28 : 24, 16, ls + 30, 1);
+        ctx.fillStyle = "#ffffff"; ctx.font = F(700, nt.size); ctx.textAlign = "center";
+        ctx.fillText(nt.lines[0], x + ls / 2, yy + ls + (story ? 40 : 34)); ctx.textAlign = "left";
+      });
+      y += rows * cellH;
+      if (extra) { ctx.fillStyle = "rgba(255,255,255,0.8)"; ctx.font = F(700, story ? 34 : 30); ctx.textAlign = "center"; ctx.fillText(`y ${extra} comercio${extra === 1 ? "" : "s"} más`, W / 2, y + 30); ctx.textAlign = "left"; y += 50; }
+      y += 20;
+      // Tope + validez
+      const pillSize = story ? 38 : 32;
+      const topeTxt = p0.tope ? `TOPE ${money(p0.tope)}` : "SIN TOPE";
+      const w1 = pill(ctx, M, y, topeTxt, pillSize, "#ffffff", "#0b0b0d");
+      const hastas = [...new Set(list.map((p) => p.hasta).filter(Boolean))].sort();
+      const valid = hastas.length ? `HASTA EL ${shortDate(hastas[0])}` : `LOS ${dayName(gen.date).toUpperCase()}`;
+      ctx.font = F(700, pillSize);
+      if (M + w1 + 16 + ctx.measureText(valid).width + pillSize * 1.3 <= W - M) pill(ctx, M + w1 + 16, y, valid, pillSize, "rgba(255,255,255,0.16)", "#ffffff");
+      else { y += pillSize * 1.75 + 12; pill(ctx, M, y, valid, pillSize, "rgba(255,255,255,0.16)", "#ffffff"); }
+      y += pillSize * 1.75 + 20;
+      if (p0.condiciones) {
+        ctx.fillStyle = "rgba(255,255,255,0.75)";
+        t = fitText(ctx, p0.condiciones, 500, story ? 32 : 28, 22, maxW, story ? 3 : 2);
+        t.lines.forEach((l) => { y += t.size * 1.35; ctx.font = F(500, t.size); ctx.fillText(l, M, y); });
+      }
+      if (useLink(format)) linkSpace(ctx, W, H);
+      footNote(ctx, W, story ? H - 120 : H - 140);
+      return c;
+    }
+
     function drawSingle(p, format) {
       const [W, H] = SIZES[format];
       // Primero mide el alto del bloque para centrarlo
@@ -1487,7 +1676,8 @@
       const ctx = c.getContext("2d");
       background(ctx, W, H);
       drawLogo(ctx, W, H, format);
-      const top = format === "story" ? 260 : 80;
+      eventBadge(ctx, W, format, p.evento);
+      const top = format === "story" ? (p.evento ? 300 : 260) : (p.evento ? 120 : 80);
       const bottom = format === "story" ? (useLink(format) ? H - 360 : H - 220) : H - 200;
       const y0 = Math.max(top + 10, top + (bottom - top - h) / 2);
       singleContent(ctx, p, format, y0);
@@ -1502,14 +1692,16 @@
       const ctx = c.getContext("2d");
       background(ctx, W, H);
       drawLogo(ctx, W, H, format);
+      const evC = sharedEvent(list);
+      eventBadge(ctx, W, format, evC);
       const M = 80, maxW = W - M * 2;
       const oneRubro = new Set(list.map((p) => rubroKey(p.rubro))).size === 1;
-      const title = oneRubro ? `PROMOS EN ${rubroName(list[0].rubro).toUpperCase()}` : (list.length === 1 ? "LA PROMO DEL DÍA" : "LAS PROMOS DEL DÍA");
+      const title = evC ? `PROMOS ${evC.toUpperCase()}` : oneRubro ? `PROMOS EN ${rubroName(list[0].rubro).toUpperCase()}` : (list.length === 1 ? "LA PROMO DEL DÍA" : "LAS PROMOS DEL DÍA");
       let ts = format === "story" ? 92 : 78;
       ctx.font = F(800, ts);
       while (ctx.measureText(title).width > maxW && ts > 50) { ts -= 4; ctx.font = F(800, ts); }
       const headH = 22 + ts + 44;
-      const top = format === "story" ? 300 : 140;
+      const top = format === "story" ? (evC ? 320 : 300) : (evC ? 170 : 140);
       const bottom = format === "story" ? (useLink(format) ? H - 350 : H - 190) : H - 150;
       const gap = 18;
       const rowH = Math.min(format === "story" ? 210 : 150, (bottom - top - headH - gap * (list.length - 1)) / list.length);
@@ -1606,7 +1798,10 @@
       if (!list.length) return;
       await fontsReady();
       $("genMsg").textContent = "Cargando logos…"; await preloadLogos(list); $("genMsg").textContent = "";
-      showPreviews(list.map((p, i) => ({ canvas: drawSingle(p, gen.format), name: `vive-promo-${gen.date}-${pad(i + 1)}-${slug(p.comercio)}-${gen.format}.png` })));
+      const groups = gen.group === false ? list.map((p) => [p]) : groupByBenefit(list);
+      showPreviews(groups.map((g, i) => g.length === 1
+        ? { canvas: drawSingle(g[0], gen.format), name: `vive-promo-${gen.date}-${pad(i + 1)}-${slug(g[0].comercio)}-${gen.format}.png` }
+        : { canvas: drawGroup(g, gen.format), name: `vive-beneficio-${gen.date}-${pad(i + 1)}-${slug(g[0].medioPago)}-${gen.format}.png` }));
     });
     $("genOne").addEventListener("click", async () => {
       const list = pickedPromos();
@@ -1982,6 +2177,37 @@
     window.addEventListener("focus", checkNewDay);
     window.addEventListener("pageshow", checkNewDay);
     setInterval(checkNewDay, 60000);
+
+    // ===== Sumar un comercio o promo (formulario oculto -> planilla "Sugerencias VIVE") =====
+    const SG_FORM = "https://docs.google.com/forms/d/e/1FAIpQLSeL7xeqbke59QXs5HT7O05sgSZAxJ3WC7hYwuEV7uN0388bug/formResponse";
+    const SG = { tipo: "entry.1051951229", comercio: "entry.329226966", ubicacion: "entry.1318640837", promo: "entry.1914896568", contacto: "entry.2137185921" };
+    let sgType = "cliente";
+    function paintSg() {
+      document.querySelectorAll("[data-sg]").forEach((b) => b.classList.toggle("on", b.dataset.sg === sgType));
+      const owner = sgType === "comercio";
+      $("sgStoreLbl").textContent = owner ? "Nombre de tu comercio" : "¿Qué comercio o local falta?";
+      $("sgPromoLbl").textContent = owner ? "Tu promo: % de descuento, días, medio de pago y tope" : "¿Qué promo o descuento tiene? (opcional)";
+      $("sgPromo").required = owner;
+      $("sgContactLbl").textContent = owner ? "WhatsApp o mail (para verificar)" : "WhatsApp o mail (opcional)";
+      $("sgContact").required = owner;
+      $("sgContact").placeholder = owner ? "Te escribimos para confirmar la promo" : "Para avisarte cuando esté";
+    }
+    document.querySelectorAll("[data-sg]").forEach((b) => b.addEventListener("click", () => { sgType = b.dataset.sg; paintSg(); }));
+    $("sgOpen").addEventListener("click", () => { $("sgBody").hidden = false; $("sgDone").hidden = true; $("sgErr").textContent = ""; paintSg(); openOverlay("sgOverlay"); setTimeout(() => $("sgStore").focus(), 80); });
+    $("sgForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const v = (id) => $(id).value.trim();
+      if (!v("sgStore")) { $("sgStore").focus(); return; }
+      if (sgType === "comercio" && (!v("sgPromo") || !v("sgContact"))) { $("sgErr").textContent = "Contanos la promo y un WhatsApp o mail para verificarla."; return; }
+      const body = new URLSearchParams({
+        [SG.tipo]: sgType === "comercio" ? "Dueño de comercio" : "Cliente",
+        [SG.comercio]: v("sgStore"), [SG.ubicacion]: [$("sgZone").value, v("sgAddr")].filter(Boolean).join(" · "),
+        [SG.promo]: v("sgPromo"), [SG.contacto]: [v("sgName"), v("sgContact")].filter(Boolean).join(" · ")
+      });
+      try { await fetch(SG_FORM, { method: "POST", mode: "no-cors", body }); }
+      catch { $("sgErr").textContent = "No se pudo enviar. Revisá la conexión y probá de nuevo."; return; }
+      $("sgForm").reset(); $("sgBody").hidden = true; $("sgDone").hidden = false;
+    });
 
     async function init() {
       paintThemeBtn();
