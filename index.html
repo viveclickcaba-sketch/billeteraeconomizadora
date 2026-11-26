@@ -970,7 +970,30 @@
       ["bonda", "bonda.com"], ["dia", "diaonline.supermercadosdia.com.ar"], ["jumbo", "jumbo.com.ar"], ["disco", "disco.com.ar"], ["vea", "vea.com.ar"]
     ];
     const ICON_COLORS = ["#1f5fbf", "#0f8a5f", "#d14b1f", "#7a3db8", "#c2185b", "#00838f", "#5d6d7e", "#b7860b", "#2e7d32", "#ad1457"];
+    // Logos que se cargan desde la pestaña "logos" de la planilla (nombre -> web)
+    let CUSTOM_LOGOS = {};
+    function customDomain(name) {
+      const k = norm(String(name || "").replace(/\(.*?\)/g, "").trim());
+      if (!k) return "";
+      if (CUSTOM_LOGOS[k]) return CUSTOM_LOGOS[k];
+      const hit = Object.keys(CUSTOM_LOGOS).find((d) => k.startsWith(d + " "));
+      return hit ? CUSTOM_LOGOS[hit] : "";
+    }
+    async function loadCustomLogos() {
+      try {
+        const res = await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=logos&nc=${Date.now()}`, { cache: "no-store" });
+        if (!res.ok) return;
+        const map = {};
+        parseCSV(await res.text()).slice(1).forEach((r) => {
+          const n = norm((r[0] || "").trim());
+          const w = (r[1] || "").trim().toLowerCase().replace(/^https?:\/\//, "").replace(/^www\./, "").replace(/\/.*$/, "");
+          if (n && /^[a-z0-9.-]+\.[a-z]{2,}$/.test(w)) map[n] = w;
+        });
+        CUSTOM_LOGOS = map;
+      } catch { /* sin conexión: quedan los logos de siempre */ }
+    }
     function logoDomain(name) {
+      const custom = customDomain(name); if (custom) return custom;
       const n = " " + norm(name).replace(/[\/()+.]/g, " ") + " ";
       const hit = LOGO_DOMAINS.find(([k]) => n.includes(" " + k + " ") || n.includes(" " + k));
       return hit ? hit[1] : "";
@@ -1001,6 +1024,7 @@
       "mostaza": "mostazaweb.com.ar", "dean & dennys": "deanddennys.com.ar"
     };
     function storeDomain(p) {
+      const custom = customDomain(p.comercio) || customDomain(p.brand); if (custom) return custom;
       const keys = [norm(p.brand), norm(String(p.comercio).replace(/\(.*?\)/g, "").trim())];
       for (const k of keys) {
         if (!k) continue;
@@ -2212,7 +2236,7 @@
     async function init() {
       paintThemeBtn();
       fillDateSelect($("dateSelect"), state.date);
-      const [promos] = await Promise.all([loadPromos(), loadPicks()]);
+      const [promos] = await Promise.all([loadPromos(), loadPicks(), loadCustomLogos()]);
       if (!promos) {
         $("statusNote").className = "notice error";
         $("statusNote").textContent = "No se pudieron cargar las promos en este momento. Probá recargar la página en unos minutos.";
