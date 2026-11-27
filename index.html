@@ -1923,6 +1923,13 @@
       return c;
     }
 
+    // Junta las promos del mismo comercio en una sola fila (ej.: Vea con BBVA y con Nación)
+    const comboKey = (p) => norm(p.comercio);
+    function groupByStore(list) {
+      const m = new Map();
+      list.forEach((p) => { const k = comboKey(p); if (!m.has(k)) m.set(k, []); m.get(k).push(p); });
+      return [...m.values()].map((g) => g.sort((a, b) => b.off - a.off));
+    }
     function drawCombined(list, format) {
       const [W, H] = SIZES[format];
       const c = document.createElement("canvas"); c.width = W; c.height = H;
@@ -1931,6 +1938,7 @@
       drawLogo(ctx, W, H, format);
       const evC = sharedEvent(list);
       eventBadge(ctx, W, format, evC);
+      const rows = groupByStore(list);
       const M = 80, maxW = W - M * 2;
       const oneRubro = new Set(list.map((p) => rubroKey(p.rubro))).size === 1;
       const title = evC ? `PROMOS ${evC.toUpperCase()}` : oneRubro ? `PROMOS EN ${rubroName(list[0].rubro).toUpperCase()}` : (list.length === 1 ? "LA PROMO DEL DÍA" : "LAS PROMOS DEL DÍA");
@@ -1941,9 +1949,14 @@
       const top = format === "story" ? (evC ? 320 : 300) : (evC ? 170 : 140);
       const bottom = format === "story" ? (useLink(format) ? H - 350 : H - 190) : H - 150;
       const gap = 18;
-      const rowH = Math.min(format === "story" ? 210 : 150, (bottom - top - headH - gap * (list.length - 1)) / list.length);
-      const blockH = headH + list.length * rowH + (list.length - 1) * gap;
-      // Centra todo el bloque (fecha + título + filas)
+      // Cada fila crece según cuántos medios tenga (hasta 3 líneas + "y N más")
+      const lines = rows.map((g) => Math.min(g.length, 3) + (g.length > 3 ? 1 : 0));
+      const unit = format === "story" ? 1 : 0.8;
+      const want = lines.map((n) => (format === "story" ? 150 : 112) + (n - 1) * 46 * unit);
+      const avail = bottom - top - headH - gap * (rows.length - 1);
+      const scale = Math.min(1.35, avail / want.reduce((a, b) => a + b, 0));
+      const rowHs = want.map((h) => h * scale);
+      const blockH = headH + rowHs.reduce((a, b) => a + b, 0) + (rows.length - 1) * gap;
       let y = top + Math.max(0, (bottom - top - blockH) / 2);
 
       ctx.fillStyle = "#ff0000"; ctx.font = F(800, 38);
@@ -1951,37 +1964,50 @@
       ctx.fillStyle = "#ffffff"; ctx.font = F(800, ts);
       y += ts; ctx.fillText(title, M, y); y += 44;
 
-      list.forEach((p) => {
+      rows.forEach((g, ri) => {
+        const rowH = rowHs[ri], p = g[0];
+        const sameOff = g.every((x) => x.off === p.off);
         roundRect(ctx, M, y, maxW, rowH, 26);
         ctx.fillStyle = "rgba(255,255,255,0.08)"; ctx.fill();
-        // logo del comercio
-        const lsz = Math.min(rowH * 0.58, 96);
+        const base = Math.min(rowH, (format === "story" ? 150 : 112) * scale);
+        const lsz = Math.min(base * 0.62, 96);
         logoBox(ctx, LOGOS.store.get(p.id), M + 26, y + (rowH - lsz) / 2, lsz, p.comercio);
-        // porcentaje
-        const ps = Math.min(rowH * 0.46, 88);
+        const ps = Math.min(base * 0.5, 88);
         const pctX = M + 26 + lsz + 24;
-        ctx.fillStyle = "#ffffff"; ctx.font = F(800, ps); ctx.textBaseline = "middle";
+        ctx.textBaseline = "middle";
+        if (!sameOff) { ctx.fillStyle = "#ff3b3b"; ctx.font = F(800, ps * 0.3); ctx.fillText("HASTA", pctX, y + rowH / 2 - ps * 0.55); }
+        ctx.fillStyle = "#ffffff"; ctx.font = F(800, ps);
         const pctTxt = `${p.off}%`;
-        ctx.fillText(pctTxt, pctX, y + rowH / 2 + 2);
+        ctx.fillText(pctTxt, pctX, y + rowH / 2 + (sameOff ? 2 : ps * 0.18));
         const textX = pctX + Math.max(ctx.measureText("100%").width, ctx.measureText(pctTxt).width) + 26;
         const tw = M + maxW - 30 - textX;
-        // comercio + detalle
-        const ns = Math.min(rowH * 0.24, 46);
-        const ds = Math.min(rowH * 0.16, 30);
-        const nt = fitText(ctx, p.comercio.toUpperCase(), 800, ns, 30, tw, rowH > 160 ? 2 : 1);
-        const nameH = nt.lines.length * nt.size * 1.05;
-        const blockTop = y + (rowH - (nameH + 14 + ds * 1.35)) / 2;
+        const ns = Math.min(base * 0.27, 46);
+        const ds = Math.min(base * 0.18, 30);
+        const nt = fitText(ctx, p.comercio.toUpperCase(), 800, ns, 28, tw, 1);
+        const nameH = nt.size * 1.05;
+        const shown = g.slice(0, 3);
+        const lineH = ds * 1.55;
+        const nLines = shown.length + (g.length > 3 ? 1 : 0);
+        const blockTop = y + (rowH - (nameH + 12 + nLines * lineH)) / 2;
         ctx.fillStyle = "#ffffff"; ctx.font = F(800, nt.size); ctx.textBaseline = "top";
-        nt.lines.forEach((l, i) => ctx.fillText(l, textX, blockTop + i * nt.size * 1.05));
-        ctx.textBaseline = "middle";
-        ctx.fillStyle = "rgba(255,255,255,0.75)"; ctx.font = F(600, ds);
-        const det = `${p.medioPago} · ${p.tope ? "Tope " + money(p.tope) : "Sin tope"}`;
-        const bsz = ds * 1.35, lineY = blockTop + nameH + 14 + bsz / 2;
-        logoBox(ctx, LOGOS.bank.get(p.medioPago), textX, lineY - bsz / 2, bsz, p.medioPago);
-        ctx.textBaseline = "middle";
-        const dt = fitText(ctx, det, 600, ds, 20, tw - bsz - 10, 1);
-        ctx.fillStyle = "rgba(255,255,255,0.75)"; ctx.font = F(600, dt.size);
-        ctx.fillText(dt.lines[0], textX + bsz + 10, lineY);
+        ctx.fillText(nt.lines[0], textX, blockTop);
+        const bsz = ds * 1.3;
+        // mismo tamaño de letra para todas las líneas de la fila
+        const dets = shown.map((q) => `${q.medioPago}${sameOff ? "" : " " + q.off + "%"} · ${q.tope ? "Tope " + money(q.tope) : "Sin tope"}`);
+        let dsz = ds;
+        ctx.font = F(600, dsz);
+        while (dsz > 16 && dets.some((d) => ctx.measureText(d).width > tw - bsz - 10)) { dsz -= 1; ctx.font = F(600, dsz); }
+        shown.forEach((q, i) => {
+          const lineY = blockTop + nameH + 12 + i * lineH + lineH / 2;
+          logoBox(ctx, LOGOS.bank.get(q.medioPago), textX, lineY - bsz / 2, bsz, q.medioPago);
+          ctx.textBaseline = "middle";
+          ctx.fillStyle = "rgba(255,255,255,0.8)"; ctx.font = F(600, dsz);
+          ctx.fillText(dets[i], textX + bsz + 10, lineY);
+        });
+        if (g.length > 3) {
+          ctx.fillStyle = "#ff3b3b"; ctx.font = F(700, ds); ctx.textBaseline = "middle";
+          ctx.fillText(`y ${g.length - 3} medio${g.length - 3 === 1 ? "" : "s"} más`, textX, blockTop + nameH + 12 + 3 * lineH + lineH / 2);
+        }
         ctx.textBaseline = "alphabetic";
         y += rowH + gap;
       });
@@ -2043,7 +2069,8 @@
     $("genOne").addEventListener("click", async () => {
       const list = pickedPromos();
       if (!list.length) { $("genMsg").textContent = "Tildá al menos una promo."; return; }
-      if (list.length > MAX_IN_ONE) { $("genMsg").textContent = `En una sola placa entran hasta ${MAX_IN_ONE} promos. Tenés ${list.length} tildadas.`; return; }
+      const nStores = groupByStore(list).length;
+      if (nStores > MAX_IN_ONE) { $("genMsg").textContent = `En una sola placa entran hasta ${MAX_IN_ONE} comercios (si un comercio tiene varias promos, va en una sola fila). Tenés ${nStores}.`; return; }
       $("genMsg").textContent = "";
       await fontsReady();
       $("genMsg").textContent = "Cargando logos…"; await preloadLogos(list); $("genMsg").textContent = "";
