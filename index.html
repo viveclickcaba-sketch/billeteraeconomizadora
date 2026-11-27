@@ -6,9 +6,9 @@
   <title>Ofertas del día | VIVE CABA</title>
   <meta name="description" content="Las promos de bancos, billeteras y clubes que valen hoy en CABA y La Plata." />
   <meta name="theme-color" content="#0b0b0e" />
-  <link rel="icon" type="image/png" href="/favicon.png" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="manifest" href="manifest.webmanifest" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="Ofertas VIVE" />
@@ -2097,7 +2097,7 @@
 
 
     // ===== Últimas noticias de VIVE CABA y VIVE La Plata (vía /feeds/ de Netlify) =====
-    const FEED_BASE = location.protocol.startsWith("http") ? "" : "https://economizadordebilletera.netlify.app";
+    const FEED_BASE = location.hostname.endsWith("netlify.app") ? "" : "https://economizadordebilletera.netlify.app";
     async function loadNews() {
       const srcs = [["CABA", FEED_BASE + "/feeds/caba", "https://vive.click/", "/nota-caba/"], ["La Plata", FEED_BASE + "/feeds/laplata", "https://vivelaplata.com.ar/", "/nota-laplata/"]];
       const res = await Promise.all(srcs.map(async ([tag, url, site, proxy]) => {
@@ -2368,7 +2368,7 @@
     const isIOS = /iphone|ipad|ipod/i.test(UA) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
     const isAndroid = /android/i.test(UA);
     const isMobile = isIOS || isAndroid;
-    if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("/sw.js").catch(() => {});
+    if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
     if (!isStandalone()) $("installBtn").hidden = false;
     window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); installEvt = e; });
     window.addEventListener("appinstalled", () => { $("installBtn").hidden = true; installEvt = null; });
