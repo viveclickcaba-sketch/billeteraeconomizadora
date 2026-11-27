@@ -1,0 +1,4 @@
+/feeds/caba       https://vive.click/category/caba/feed/   200
+/feeds/laplata    https://vivelaplata.com.ar/feed/         200
+/nota-caba/*      https://vive.click/:splat                200
+/nota-laplata/*   https://vivelaplata.com.ar/:splat        200

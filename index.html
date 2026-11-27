@@ -478,19 +478,32 @@
     .all-today { margin-top: 10px; background: none; border: 0; color: var(--red); font: 700 14px "Inter", sans-serif; text-decoration: underline; cursor: pointer; padding: 4px 2px; }
     .finder .tiles { grid-template-columns: repeat(9, minmax(0, 1fr)); grid-auto-rows: 1fr; }
     .finder .tile { aspect-ratio: 1 / 1; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 4px; padding: 10px 6px; }
-    .finder .tile b { font-size: 13px; line-height: 1.15; overflow-wrap: anywhere; }
+    .finder .tile b { font-size: 13px; line-height: 1.15; overflow-wrap: normal; word-break: normal; hyphens: none; letter-spacing: -.01em; }
     .finder .tile small { font-size: 11.5px; }
     @media (max-width: 1100px) { .finder .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 560px; } }
     .tile-add { display: inline-block; margin-top: 4px; padding: 5px 9px; border-radius: 999px; background: var(--red); color: #fff; font: 800 12px "Montserrat", sans-serif; }
     @media (max-width: 760px) {
       .finder .tiles { gap: 8px; }
       .finder .tile b { font-size: 12.5px; }
+      .finder .t-super b { font-size: 11.5px; letter-spacing: -.02em; }
     }
     .miss { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: space-between; margin-top: 10px; padding: 12px 14px; border-radius: 14px; border: 1px dashed var(--red); background: var(--red-soft); font-size: 14px; }
     .miss[hidden] { display: none; }
     .pay-find { width: 100%; height: 46px; padding: 0 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--ink); font: 500 15px "Inter", sans-serif; margin-bottom: 10px; }
     .pay-find + .miss { margin: 0 0 12px; }
     .pay-row[hidden], .pay-group[hidden] { display: none; }
+    .promo-banner { margin-top: 18px; }
+    .promo-banner a { display: block; border-radius: 20px; overflow: hidden; border: 1px solid var(--line); transition: transform .15s; }
+    .promo-banner a:hover { transform: translateY(-2px); }
+    .promo-banner img { display: block; width: 100%; height: auto; }
+    .vl-news { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0 0 14px; }
+    .vl-news[hidden] { display: none; }
+    .vl-n { display: flex; flex-direction: column; border-radius: 14px; overflow: hidden; background: rgba(255,255,255,.05); border: 1px solid var(--line); color: var(--ink); text-decoration: none; transition: transform .15s, border-color .15s; }
+    .vl-n:hover { border-color: var(--red); transform: translateY(-2px); }
+    .vl-n .ph { display: block; aspect-ratio: 16 / 10; background: #26262c center / cover no-repeat; }
+    .vl-n .tx { padding: 9px 10px 11px; }
+    .vl-n em { font: 800 10px "Montserrat", sans-serif; font-style: normal; letter-spacing: .08em; color: #fff; background: var(--red); padding: 2px 6px; border-radius: 5px; text-transform: uppercase; }
+    .vl-n b { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; font: 700 13.5px/1.3 "Inter", sans-serif; margin-top: 6px; }
     .vive-links { margin-top: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     @media (max-width: 760px) { .vive-links { grid-template-columns: 1fr; } }
     .vl-card { padding: 20px; border-radius: 20px; border: 1px solid var(--line); color: var(--ink); }
@@ -614,6 +627,10 @@
     </section>
   </main>
 
+  <section class="wrap promo-banner" aria-label="Test Político">
+    <a href="https://testpolitico.pages.dev/rapido" target="_blank" rel="noopener"><img src="banner-testpolitico.jpg" width="1600" height="533" loading="lazy" alt="Test Político: ¿Qué alien político sos? Adiviná quién dijo cada frase. Jugar ahora" /></a>
+  </section>
+
   <section class="suggest wrap" aria-label="Sumar un comercio o promo">
     <div class="suggest-box">
       <div><h3>¿Falta un comercio o tenés una promo?</h3><p>Contanos qué local o beneficio no está. ¿Tenés un comercio? Cargá tu promo: la revisamos, la sumamos y <b>además podés ser promocionado en una nota en <a href="https://vive.click" target="_blank" rel="noopener">vive.click</a> o <a href="https://vivelaplata.com.ar" target="_blank" rel="noopener">vivelaplata.com.ar</a></b>.</p></div>
@@ -636,6 +653,7 @@
       <div class="vl-ico">📰</div>
       <h3>Entrá a nuestras webs</h3>
       <p>Noticias, salidas y descuentos de tu ciudad.</p>
+      <div class="vl-news" id="vlNews" hidden></div>
       <div class="vl-btns">
         <a class="vl-btn" href="https://vive.click/caba" target="_blank" rel="noopener"><b>VIVE CABA</b><span>vive.click/caba</span></a>
         <a class="vl-btn" href="https://vivelaplata.com.ar" target="_blank" rel="noopener"><b>VIVE La Plata</b><span>vivelaplata.com.ar</span></a>
@@ -1406,7 +1424,7 @@
       saveState(); renderAll(); $("results").scrollIntoView({ block: "start", behavior: "smooth" });
     });
     $("sgPlus").addEventListener("click", () => $("sgOpen").click());
-    $("allToday").addEventListener("click", () => { state.wallets = [...ALL_WALLETS]; state.showRes = true; saveState(); renderAll(); $("results").scrollIntoView({ block: "start", behavior: "smooth" }); });
+    $("allToday").addEventListener("click", () => { state.wallets = []; state.showRes = true; saveState(); renderAll(); $("results").scrollIntoView({ block: "start", behavior: "smooth" }); });
     function renderEvent() {
       const list = baseList().filter((p) => p.evento && p.off >= 25).sort((a, b) => potential(b) - potential(a) || b.off - a.off);
       if (!list.length) { $("eventBox").hidden = true; $("eventBox").innerHTML = ""; return; }
@@ -1477,7 +1495,7 @@
       const isAll = state.wallets.length === 0 || state.wallets.length === ALL_WALLETS.length;
       let next = isAll ? [] : [...state.wallets];
       next = b.checked ? [...next.filter((x) => x !== w), w] : next.filter((x) => x !== w);
-      state.wallets = next.length ? next : [...ALL_WALLETS]; state.showRes = true;
+      state.wallets = next.length ? next : []; state.showRes = true;
       saveState(); renderAll();
     });
     function filterPay() {
@@ -1498,7 +1516,7 @@
       $("sgStore").value = "Banco o billetera: " + q;
       $("sgPromo").value = "Falta " + q + " en la lista. Promo que conozco: ";
     });
-    $("payAllChk").addEventListener("change", () => { state.wallets = [...ALL_WALLETS]; state.showRes = true; saveState(); renderAll(); });
+    $("payAllChk").addEventListener("change", () => { state.wallets = []; state.showRes = true; saveState(); renderAll(); });
     document.addEventListener("click", (e) => {
       const s = e.target.closest("[data-fav]"); if (!s) return;
       const k = s.dataset.fav;
@@ -2078,6 +2096,37 @@
     });
 
 
+    // ===== Últimas noticias de VIVE CABA y VIVE La Plata (vía /feeds/ de Netlify) =====
+    const FEED_BASE = location.protocol.startsWith("http") ? "" : "https://economizadordebilletera.netlify.app";
+    async function loadNews() {
+      const srcs = [["CABA", FEED_BASE + "/feeds/caba", "https://vive.click/", "/nota-caba/"], ["La Plata", FEED_BASE + "/feeds/laplata", "https://vivelaplata.com.ar/", "/nota-laplata/"]];
+      const res = await Promise.all(srcs.map(async ([tag, url, site, proxy]) => {
+        try {
+          const t = await fetch(url).then((r) => (r.ok ? r.text() : ""));
+          const d = new DOMParser().parseFromString(t, "text/xml");
+          const list = [...d.querySelectorAll("item")].slice(0, 2).map((i) => {
+            const html = (i.getElementsByTagName("content:encoded")[0]?.textContent || "") + (i.querySelector("description")?.textContent || "");
+            const img = (html.match(/<img[^>]+src="([^"]+)"/) || [])[1] || "";
+            return { tag, title: i.querySelector("title")?.textContent.trim() || "", link: (i.querySelector("link")?.textContent || "").split("?")[0], img };
+          }).filter((n) => n.title && n.link.startsWith(site));
+          // Si la nota no trae foto en el feed, usamos la foto de vista previa de la nota (og:image)
+          await Promise.all(list.map(async (n) => {
+            if (n.img) return;
+            try {
+              const h = await fetch(FEED_BASE + proxy + n.link.slice(site.length)).then((r) => (r.ok ? r.text() : ""));
+              n.img = new DOMParser().parseFromString(h, "text/html").querySelector('meta[property="og:image"]')?.content || "";
+            } catch { /* sin foto */ }
+          }));
+          return list;
+        } catch { return []; }
+      }));
+      const items = res.flat();
+      if (!items.length) return;
+      $("vlNews").innerHTML = items.map((n) => `<a class="vl-n" href="${esc(n.link)}" target="_blank" rel="noopener"><span class="ph"${n.img ? ` style="background-image:url('${esc(n.img)}')"` : ""}></span><span class="tx"><em>${n.tag}</em><b>${esc(n.title)}</b></span></a>`).join("");
+      $("vlNews").hidden = false;
+    }
+    loadNews();
+
     // ===== Pro =====
     $("proOpen").addEventListener("click", () => {
       const cta = $("proCta");
@@ -2489,9 +2538,10 @@
         $("statusNote").textContent = `Última revisión de promos: ${last ? shortDate(last) : "hoy"}. Verificá siempre las condiciones en el link oficial.`;
       }
       ALL_WALLETS = uniq(PROMOS.map((p) => p.medioPago).filter(Boolean));
-      if (!Array.isArray(state.wallets)) state.wallets = [...ALL_WALLETS];
+      // "Todos" se guarda como lista vacía, así los medios nuevos aparecen solos
+      if (!Array.isArray(state.wallets)) state.wallets = [];
       else state.wallets = state.wallets.filter((w) => ALL_WALLETS.includes(w));
-      if (!state.wallets.length) state.wallets = [...ALL_WALLETS];
+      if (state.wallets.length >= Math.max(12, ALL_WALLETS.length * 0.7)) state.wallets = [];
       const zones = uniq(PROMOS.flatMap((p) => p.zonas));
       if (state.zone !== "TODAS" && !zones.includes(state.zone)) state.zone = "TODAS";
       renderAll();
