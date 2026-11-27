@@ -1468,12 +1468,14 @@
     });
     $("placeTiles").addEventListener("click", (e) => {
       const b = e.target.closest("[data-place]"); if (!b) return;
-      state.place = state.place === b.dataset.place ? "todo" : b.dataset.place; state.brand = ""; saveState();
-      renderPlaces(); renderStores(); renderResults();
+      state.place = state.place === b.dataset.place ? "todo" : b.dataset.place; state.brand = "";
+      if (state.place !== "todo") state.showRes = true;
+      saveState(); renderAll();
+      if (state.place !== "todo") $("results").scrollIntoView({ block: "start", behavior: "smooth" });
     });
     $("storeRow").addEventListener("click", (e) => {
       const b = e.target.closest("[data-brand]"); if (!b) return;
-      state.brand = b.dataset.brand; renderStores(); renderResults();
+      state.brand = b.dataset.brand; state.showRes = true; renderAll();
       $("results").scrollIntoView({ block: "start" });
     });
     function checkStoreMiss() {
